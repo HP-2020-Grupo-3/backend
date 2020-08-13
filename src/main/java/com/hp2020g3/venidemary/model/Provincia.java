@@ -3,7 +3,7 @@ package com.hp2020g3.venidemary.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
+@Entity(name="provincia")
 public class Provincia {
 
     @Id

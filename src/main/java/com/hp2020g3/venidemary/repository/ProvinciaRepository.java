@@ -10,3 +10,4 @@ public interface ProvinciaRepository extends CrudRepository<Provincia, Integer>{
     List<Provincia> findByNombre(String name);
 
 }
+
