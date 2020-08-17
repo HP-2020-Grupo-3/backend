@@ -1,6 +1,7 @@
 package com.hp2020g3.venidemary.model;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.List;
 
 @Entity(name="role")

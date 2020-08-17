@@ -1,7 +1,6 @@
 package com.hp2020g3.venidemary.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity(name="permission")
 public class Permission {

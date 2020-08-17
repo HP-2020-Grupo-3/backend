@@ -1,6 +1,6 @@
 package com.hp2020g3.venidemary.controller;
 
-import com.hp2020g3.venidemary.service.RoleService;
+import com.hp2020g3.venidemary.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,18 +8,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class RoleController {
+public class UsuarioController {
 
     @Autowired
-    private RoleService roleService;
+    private UsuarioService usuarioService;
 
-    @GetMapping("/role")
+    @GetMapping("/usuario")
     public ResponseEntity getAll() {
-        return ResponseEntity.ok(roleService.findAll());
+        return ResponseEntity.ok(usuarioService.findAll());
     }
 
-    @GetMapping("/role/{id}")
+    @GetMapping("/usuario/{id}")
     public ResponseEntity getById(@PathVariable Integer id) {
-        return ResponseEntity.ok(roleService.findById(id));
+        return ResponseEntity.ok(usuarioService.findById(id));
     }
+
 }
