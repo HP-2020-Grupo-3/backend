@@ -25,13 +25,14 @@ public class RubroService {
         return rubroRepository.save(rubro);
     }
 
-    public Rubro update(Rubro newRubro, Integer id) {
-        Optional<Rubro> rubro =  this.findById(id);
+    public Rubro update(Rubro newRubro) {
+        Optional<Rubro> rubro =  this.findById(newRubro.getId());
 
         if (rubro.isPresent()) {
             rubro.get().setNombre(newRubro.getNombre());
             return this.save(rubro.get());
         } else {
+            // TODO: Esto deberia tirar un error de que rubro que intetas actuializar no existe.
             newRubro.setId(null);
             return this.save(newRubro);
         }
