@@ -31,13 +31,15 @@ public class RubroController {
         return ResponseEntity.ok(rubroService.save(rubro));
     }
 
-    @PutMapping("/rubro/{id}")
-    ResponseEntity update(@RequestBody Rubro newRubro, @PathVariable Integer id) {
-        return ResponseEntity.ok(rubroService.update(newRubro, id));
+    @PutMapping("/rubro")
+    ResponseEntity update(@RequestBody Rubro newRubro) {
+        return ResponseEntity.ok(rubroService.update(newRubro));
     }
 
     @DeleteMapping("/rubro/{id}")
-    void delete(@PathVariable Integer id) {
+    ResponseEntity delete(@PathVariable Integer id) {
         rubroService.deleteById(id);
+
+        return ResponseEntity.ok("{}");
     }
 }
