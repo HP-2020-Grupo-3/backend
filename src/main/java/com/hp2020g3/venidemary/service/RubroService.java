@@ -14,10 +14,12 @@ public class RubroService {
     RubroRepository rubroRepository;
 
     public Iterable<Rubro> findAll() {
+
         return rubroRepository.findAll();
     }
 
     public Optional<Rubro> findById(Integer id) {
+
         return rubroRepository.findById(id);
     }
 
@@ -40,5 +42,9 @@ public class RubroService {
 
     public void deleteById(Integer id) {
         rubroRepository.deleteById(id);
+    }
+
+    public Rubro getBaseDto() {
+        return new Rubro();
     }
 }

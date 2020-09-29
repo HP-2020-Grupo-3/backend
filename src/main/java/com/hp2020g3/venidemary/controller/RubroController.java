@@ -23,8 +23,16 @@ public class RubroController {
 
     @GetMapping("/rubro/{id}")
     public ResponseEntity getById(@PathVariable Integer id) {
+
         return ResponseEntity.ok(rubroService.findById(id));
     }
+
+    @GetMapping("/rubro/base")
+    public ResponseEntity getBaseDto() {
+
+        return ResponseEntity.ok(rubroService.getBaseDto());
+    }
+
 
     @PostMapping("/rubro")
     public ResponseEntity save(@RequestBody Rubro rubro) {
