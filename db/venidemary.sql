@@ -1,3 +1,10 @@
+DROP DATABASE IF EXISTS `venidemary`;
+CREATE DATABASE `venidemary`;
+USE `venidemary`;
+
+-- SET FOREIGN_KEY_CHECKS=0;
+-- SET FOREIGN_KEY_CHECKS=1;
+
 -- MySQL dump 10.13  Distrib 5.7.30, for Linux (x86_64)
 --
 -- Host: 192.168.1.112    Database: venidemary
@@ -36,7 +43,7 @@ CREATE TABLE `articulo` (
   KEY `articulo_rubro_FK` (`rubroId`),
   CONSTRAINT `articulo_rubro_FK` FOREIGN KEY (`rubroId`) REFERENCES `rubro` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40101 SET character_set_client = @saved_cs_clienciudad_provincia_FKciudadciudadt */;
 
 --
 -- Dumping data for table `articulo`
@@ -219,9 +226,12 @@ CREATE TABLE `direccion` (
   `calle` varchar(100) NOT NULL,
   `numero` int unsigned NOT NULL,
   `detalle` varchar(100) DEFAULT NULL,
+  `entityId` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `direccion_ciudad_FK` (`ciudadId`),
-  CONSTRAINT `direccion_ciudad_FK` FOREIGN KEY (`ciudadId`) REFERENCES `ciudad` (`id`)
+  KEY `direccion_entity_fk` (`entityId`),
+  CONSTRAINT `direccion_ciudad_FK` FOREIGN KEY (`ciudadId`) REFERENCES `ciudad` (`id`),
+  CONSTRAINT `direccion_entity_FK` FOREIGN KEY (`entityId`) REFERENCES `entity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -691,59 +701,6 @@ LOCK TABLES `provincia` WRITE;
 /*!40000 ALTER TABLE `provincia` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `rDireccionEntity`
---
-
-DROP TABLE IF EXISTS `rDireccionEntity`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `rDireccionEntity` (
-  `entityId` int unsigned NOT NULL,
-  `direccionId` int unsigned NOT NULL,
-  PRIMARY KEY (`entityId`,`direccionId`),
-  KEY `rDireccionEntity_direccion_FK` (`direccionId`),
-  KEY `rDireccionEntity_entity_FK` (`entityId`),
-  CONSTRAINT `rDireccionEntity_direccion_FK` FOREIGN KEY (`direccionId`) REFERENCES `direccion` (`id`),
-  CONSTRAINT `rDireccionEntity_entity_FK` FOREIGN KEY (`entityId`) REFERENCES `entity` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `rDireccionEntity`
---
-
-LOCK TABLES `rDireccionEntity` WRITE;
-/*!40000 ALTER TABLE `rDireccionEntity` DISABLE KEYS */;
-/*!40000 ALTER TABLE `rDireccionEntity` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `rEntityTelefono`
---
-
-DROP TABLE IF EXISTS `rEntityTelefono`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `rEntityTelefono` (
-  `entityId` int unsigned NOT NULL,
-  `telefonoId` int unsigned NOT NULL,
-  PRIMARY KEY (`entityId`,`telefonoId`),
-  KEY `rEntityTelefono_telefono_FK` (`telefonoId`),
-  KEY `rEntityTelefono_entity_FK` (`entityId`),
-  CONSTRAINT `rEntityTelefono_entity_FK` FOREIGN KEY (`entityId`) REFERENCES `entity` (`id`),
-  CONSTRAINT `rEntityTelefono_telefono_FK` FOREIGN KEY (`telefonoId`) REFERENCES `telefono` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `rEntityTelefono`
---
-
-LOCK TABLES `rEntityTelefono` WRITE;
-/*!40000 ALTER TABLE `rEntityTelefono` DISABLE KEYS */;
-/*!40000 ALTER TABLE `rEntityTelefono` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `rLineaVentaNotaCredito`
@@ -889,7 +846,9 @@ CREATE TABLE `telefono` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `caracteristica` varchar(10) NOT NULL,
   `numero` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
+  `entityId` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `entity_telefono_FK` FOREIGN KEY (`entityId`) REFERENCES `entity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
