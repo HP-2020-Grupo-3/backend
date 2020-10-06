@@ -2,6 +2,7 @@ package com.hp2020g3.venidemary.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "usuario")
 @PrimaryKeyJoinColumn(name = "entityId")
@@ -14,6 +15,9 @@ public class Usuario extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "roleId")
     private Role role;
+    
+    @OneToMany(mappedBy ="usuario", fetch = FetchType.LAZY)
+    private List<Direccion> direcciones;
 
     public Usuario() {}
 
@@ -55,5 +59,13 @@ public class Usuario extends BaseEntity{
 
     public void setRole(Role role) {
         this.role = role;
+    }
+    
+    public List<Direccion> getDirecciones(){
+    	return direcciones;
+    }
+    
+    public void setCiudades(List<Direccion> direcciones) {
+        this.direcciones = direcciones;
     }
 }

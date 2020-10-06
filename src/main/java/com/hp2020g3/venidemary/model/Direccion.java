@@ -1,12 +1,17 @@
 package com.hp2020g3.venidemary.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-@Entity(name="domicilio")
-public class Domicilio {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity(name="direccion")
+public class Direccion {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,9 +20,13 @@ public class Domicilio {
 	private Integer numero;
 	private String detalle;
 	
-	public Domicilio() {}
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "entityId")
+	private Usuario usuario;
 	
-	public Domicilio(Integer id, String calle, Integer numero, String detalle) {
+	public Direccion() {}
+	
+	public Direccion(Integer id, String calle, Integer numero, String detalle) {
 		this.id = id;
 		this.calle = calle;
 		this.numero = numero;
@@ -65,7 +74,14 @@ public class Domicilio {
 	public void setDetalle(String detalle) {
 		this.detalle = detalle;
 	}
-
 	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
 }

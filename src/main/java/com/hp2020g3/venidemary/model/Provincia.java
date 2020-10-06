@@ -5,7 +5,6 @@ import javax.persistence.*;
 
 
 @Entity(name="provincia")
-
 public class Provincia {
 
     @Id
@@ -13,7 +12,7 @@ public class Provincia {
     private Integer id;
     private String nombre;
     
-    @OneToMany(mappedBy="provinciaId")
+    @OneToMany(mappedBy="provincia", fetch = FetchType.LAZY)
     private List<Ciudad> ciudades;
 
     public Provincia() {}

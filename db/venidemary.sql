@@ -917,7 +917,7 @@ DROP TABLE IF EXISTS `usuario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usuario` (
-  `entityId` int unsigned NOT NULL AUTO_INCREMENT,
+  `entityId` int unsigned NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
