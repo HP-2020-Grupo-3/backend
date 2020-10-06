@@ -32,6 +32,7 @@ public class CiudadService {
 
         if (ciudad.isPresent()) {
             ciudad.get().setNombre(newCiudad.getNombre());
+            ciudad.get().setCodigoPostal(newCiudad.getCodigoPostal());
             return this.save(ciudad.get());
         } else {
             // TODO: Esto deberia tirar un error de que rubro que intetas actuializar no existe.
@@ -47,4 +48,4 @@ public class CiudadService {
     public Ciudad getBaseDto() {
         return new Ciudad();
     }
-}
+} 

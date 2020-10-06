@@ -21,4 +21,28 @@ public class PermissionController {
     public ResponseEntity getById(@PathVariable Integer id) {
         return ResponseEntity.ok(permissionService.findById(id));
     }
+    
+    @GetMapping("/permission/base")
+    public ResponseEntity getBaseDto() {
+
+        return ResponseEntity.ok(permissionService.getBaseDto());
+    }
+
+    @PostMapping("/permission")
+    public ResponseEntity save(@RequestBody Permission permission) {
+        return ResponseEntity.ok(permissionService.save(permission));
+    }
+
+    @PutMapping("/permission")
+    ResponseEntity update(@RequestBody Permission newPermission) {
+        return ResponseEntity.ok(permissionService.update(newPermission));  
+    }
+
+    @DeleteMapping("/permission/{id}")
+    ResponseEntity delete(@PathVariable Integer id) {
+    	permissionService.deleteById(id);
+
+        return ResponseEntity.ok("{}");
+    }
 }
+ 

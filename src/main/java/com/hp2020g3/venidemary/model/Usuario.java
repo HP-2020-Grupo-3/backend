@@ -65,7 +65,7 @@ public class Usuario extends BaseEntity{
     	return direcciones;
     }
     
-    public void setCiudades(List<Direccion> direcciones) {
+    public void setDirecciones(List<Direccion> direcciones) {
         this.direcciones = direcciones;
     }
 }

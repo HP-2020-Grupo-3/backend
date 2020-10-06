@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity(name="direccion")
+@Entity(name = "direccion")
 public class Direccion {
 	
 	@Id
@@ -22,6 +22,7 @@ public class Direccion {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "entityId")
+	@JsonIgnore 
 	private Usuario usuario;
 	
 	public Direccion() {}
@@ -32,7 +33,6 @@ public class Direccion {
 		this.numero = numero;
 		this.detalle = detalle;
 			
-		
 	}
 
 	
