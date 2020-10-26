@@ -5,6 +5,7 @@ import com.hp2020g3.venidemary.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -42,8 +43,19 @@ public class UsuarioService {
         }
     }
 
-    public void deleteById(Integer id) {
-        usuarioRepository.deleteById(id);
+    public Boolean deleteById(Integer id) {
+    	Optional<Usuario> usuario = usuarioRepository.findById(id);
+    	Date date = new Date();
+    	
+    	if (usuario.isPresent()) {
+            usuario.get().setDeleted(true);
+            usuario.get().setDeletionDate(date);
+            this.save(usuario.get());
+            return true;
+        } else {
+            // TODO: Esto deberia tirar un error de que no existe el ID de usuario a eliminar
+            return false;
+        }
     }
 
     public Usuario getBaseDto() {
