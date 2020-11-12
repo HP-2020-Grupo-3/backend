@@ -8,21 +8,24 @@ import java.util.Date;
 public abstract class BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
 
     @ManyToOne
     @JoinColumn(name = "entityTypeId")
     private EntityType entityType;
-
+    
+    @Transient
     private Date creationDate;
     private Date deletionDate;
-
-    private Boolean isDeleted;
+    
+    
+    private Boolean isDeleted = false;
 
     public BaseEntity() {}
 
     public BaseEntity(Integer id, EntityType entityType, Date creationDate, Date deletionDate, Boolean isDeleted) {
-        Id = id;
+        
         this.entityType = entityType;
         this.creationDate = creationDate;
         this.deletionDate = deletionDate;

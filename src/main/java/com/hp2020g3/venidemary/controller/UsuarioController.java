@@ -20,7 +20,7 @@ public class UsuarioController {
 
     @GetMapping("/usuario")
     public ResponseEntity getAll() {
-        return ResponseEntity.ok(usuarioService.findAll());
+        return ResponseEntity.ok(usuarioService.findByIsDeleted());
     }
 
     @GetMapping("/usuario/{id}")

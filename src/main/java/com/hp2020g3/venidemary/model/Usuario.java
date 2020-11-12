@@ -1,6 +1,8 @@
 package com.hp2020g3.venidemary.model;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +13,11 @@ public class Usuario extends BaseEntity{
     private String nombre;
     private String password;
     private String email;
+    
+    private EntityType entityType = new EntityType(1, "Usuario");
+    
+    //private Boolean isDeleted = false;
+    
 
     @ManyToOne
     @JoinColumn(name = "roleId")
@@ -23,6 +30,7 @@ public class Usuario extends BaseEntity{
 
     public Usuario(Integer id, EntityType entityType, Date creationDate, Date deletionDate, Boolean isDeleted, String nombre, String password, String email, Role role) {
         super(id, entityType, creationDate, deletionDate, isDeleted);
+        
         this.nombre = nombre;
         this.password = password;
         this.email = email;
