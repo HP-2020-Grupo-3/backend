@@ -43,7 +43,7 @@ CREATE TABLE `articulo` (
   KEY `articulo_rubro_FK` (`rubroId`),
   CONSTRAINT `articulo_rubro_FK` FOREIGN KEY (`rubroId`) REFERENCES `rubro` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_clienciudad_provincia_FKciudadciudadt */;
+
 
 --
 -- Dumping data for table `articulo`
