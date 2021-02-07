@@ -1,7 +1,6 @@
 package com.hp2020g3.venidemary.controller;
 
 import com.hp2020g3.venidemary.model.Rubro;
-import com.hp2020g3.venidemary.service.ProvinciaService;
 import com.hp2020g3.venidemary.service.RubroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

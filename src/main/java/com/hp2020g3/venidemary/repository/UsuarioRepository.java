@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
     Optional<Usuario> findByNombre(String nombre);
+
+	Iterable<Usuario> findByIsDeleted(Boolean isDeleted);
 }

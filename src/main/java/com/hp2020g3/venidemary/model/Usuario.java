@@ -3,7 +3,10 @@ package com.hp2020g3.venidemary.model;
 import org.springframework.security.core.userdetails.User;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "usuario")
 @PrimaryKeyJoinColumn(name = "entityId")
@@ -12,15 +15,24 @@ public class Usuario extends BaseEntity {
     private String nombre;
     private String password;
     private String email;
+    
+    private EntityType entityType = new EntityType(1, "Usuario");
+    
+    //private Boolean isDeleted = false;
+    
 
     @ManyToOne
     @JoinColumn(name = "roleId")
     private Role role;
+    
+    @OneToMany(mappedBy ="usuario", fetch = FetchType.LAZY)
+    private List<Direccion> direcciones;
 
     public Usuario() {}
 
     public Usuario(Integer id, EntityType entityType, Date creationDate, Date deletionDate, Boolean isDeleted, String nombre, String password, String email, Role role) {
         super(id, entityType, creationDate, deletionDate, isDeleted);
+        
         this.nombre = nombre;
         this.password = password;
         this.email = email;
@@ -57,5 +69,13 @@ public class Usuario extends BaseEntity {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+    
+    public List<Direccion> getDirecciones(){
+    	return direcciones;
+    }
+    
+    public void setDirecciones(List<Direccion> direcciones) {
+        this.direcciones = direcciones;
     }
 }

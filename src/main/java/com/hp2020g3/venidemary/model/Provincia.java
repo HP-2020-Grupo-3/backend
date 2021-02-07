@@ -1,14 +1,19 @@
 package com.hp2020g3.venidemary.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.util.List;
+import javax.persistence.*;
+
 
 @Entity(name="provincia")
 public class Provincia {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
+    
+    @OneToMany(mappedBy="provincia", fetch = FetchType.LAZY)
+    private List<Ciudad> ciudades;
 
     public Provincia() {}
 
@@ -31,5 +36,13 @@ public class Provincia {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    
+    public List<Ciudad> getCiudades(){
+    	return ciudades;
+    }
+    
+    public void setCiudades(List<Ciudad> ciudades) {
+        this.ciudades = ciudades;
     }
 }
