@@ -35,9 +35,8 @@ public class UsuarioService {
     public Optional<Usuario> findById(Integer id) {
         return usuarioRepository.findById(id);
     }
-    
+
     //TODO id de usuario tiene que ser asignado manualmente al DTO antes de llamar a Save
-    
     public Usuario save(Usuario usuario) {
     	
     	Optional<Role> role = roleService.findByName("Cliente");
@@ -49,9 +48,6 @@ public class UsuarioService {
        		// TODO: Tirar error de que no existe el rol para el usuario
     		return usuario;
     	}
-    	
-    	
-        
     }
 
     public Usuario update(Usuario newUsuario) {
@@ -93,6 +89,4 @@ public class UsuarioService {
     public static<T> Iterable<T> iteratorToIterable(Iterator<T> iterator) {
         return () -> iterator;
     }
-    
-   
 }

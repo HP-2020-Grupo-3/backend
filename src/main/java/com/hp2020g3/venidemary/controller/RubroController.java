@@ -4,11 +4,13 @@ import com.hp2020g3.venidemary.model.Rubro;
 import com.hp2020g3.venidemary.service.RubroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
+@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_EMPLOYEE')")
 public class RubroController {
 
     @Autowired
@@ -19,6 +21,7 @@ public class RubroController {
 
         return ResponseEntity.ok(rubroService.findAll());
     }
+
 
     @GetMapping("/rubro/{id}")
     public ResponseEntity getById(@PathVariable Integer id) {

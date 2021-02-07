@@ -1,11 +1,4 @@
-DROP DATABASE IF EXISTS `venidemary`;
-CREATE DATABASE `venidemary`;
-USE `venidemary`;
-
--- SET FOREIGN_KEY_CHECKS=0;
--- SET FOREIGN_KEY_CHECKS=1;
-
--- MySQL dump 10.13  Distrib 5.7.30, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.33, for Linux (x86_64)
 --
 -- Host: 192.168.1.112    Database: venidemary
 -- ------------------------------------------------------
@@ -31,9 +24,9 @@ DROP TABLE IF EXISTS `articulo`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `articulo` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL,
-  `descripcion` varchar(400) NOT NULL,
-  `imagen` varchar(100) NOT NULL,
+  `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `imagen` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `stockActual` int unsigned NOT NULL,
   `stockDeseado` int unsigned NOT NULL,
   `deletionDate` datetime DEFAULT NULL,
@@ -43,7 +36,7 @@ CREATE TABLE `articulo` (
   KEY `articulo_rubro_FK` (`rubroId`),
   CONSTRAINT `articulo_rubro_FK` FOREIGN KEY (`rubroId`) REFERENCES `rubro` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `articulo`
@@ -64,7 +57,7 @@ DROP TABLE IF EXISTS `ciudad`;
 CREATE TABLE `ciudad` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `provinciaId` int unsigned NOT NULL,
-  `nombre` varchar(50) NOT NULL,
+  `nombre` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `codigoPostal` smallint NOT NULL,
   PRIMARY KEY (`id`),
   KEY `ciudad_provincia_FK` (`provinciaId`),
@@ -120,8 +113,8 @@ CREATE TABLE `comprobantePago` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `numeroComprobante` int unsigned NOT NULL,
-  `numeroFactura` varchar(100) NOT NULL,
-  `nota` varchar(400) NOT NULL,
+  `numeroFactura` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nota` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `comprobantePago_numeroComprobante_UNIQUE` (`numeroComprobante`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -223,9 +216,9 @@ DROP TABLE IF EXISTS `direccion`;
 CREATE TABLE `direccion` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `ciudadId` int unsigned DEFAULT NULL,
-  `calle` varchar(100) NOT NULL,
+  `calle` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `numero` int unsigned NOT NULL,
-  `detalle` varchar(100) DEFAULT NULL,
+  `detalle` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `entityId` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `direccion_ciudad_FK` (`ciudadId`),
@@ -260,7 +253,7 @@ CREATE TABLE `entity` (
   PRIMARY KEY (`id`),
   KEY `entity_entityType_FK` (`entityTypeId`),
   CONSTRAINT `entity_entityType_FK` FOREIGN KEY (`entityTypeId`) REFERENCES `entityType` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -269,6 +262,7 @@ CREATE TABLE `entity` (
 
 LOCK TABLES `entity` WRITE;
 /*!40000 ALTER TABLE `entity` DISABLE KEYS */;
+INSERT INTO `entity` VALUES (1,1,'2020-08-17 20:31:15',NULL,0),(3,1,'2020-10-08 00:17:41',NULL,0),(4,1,'2020-10-08 00:17:41',NULL,0);
 /*!40000 ALTER TABLE `entity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -283,7 +277,7 @@ CREATE TABLE `entityType` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -292,6 +286,7 @@ CREATE TABLE `entityType` (
 
 LOCK TABLES `entityType` WRITE;
 /*!40000 ALTER TABLE `entityType` DISABLE KEYS */;
+INSERT INTO `entityType` VALUES (1,'usuario');
 /*!40000 ALTER TABLE `entityType` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -463,7 +458,7 @@ DROP TABLE IF EXISTS `medioPago`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `medioPago` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL,
+  `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -489,7 +484,7 @@ CREATE TABLE `notaCredito` (
   `numeroComprobante` int unsigned NOT NULL,
   `importe` decimal(12,3) NOT NULL,
   `fechaEmision` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `motivo` varchar(400) NOT NULL,
+  `motivo` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ventaIdGenerada` int unsigned NOT NULL,
   `ventaIdUsada` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
@@ -610,9 +605,9 @@ DROP TABLE IF EXISTS `permission`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `permission` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -621,6 +616,7 @@ CREATE TABLE `permission` (
 
 LOCK TABLES `permission` WRITE;
 /*!40000 ALTER TABLE `permission` DISABLE KEYS */;
+INSERT INTO `permission` VALUES (1,'access_site'),(2,'somename');
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -660,10 +656,10 @@ DROP TABLE IF EXISTS `proveedor`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `proveedor` (
   `entityId` int unsigned NOT NULL AUTO_INCREMENT,
-  `razonSocial` varchar(100) NOT NULL,
-  `cuit` varchar(14) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `descripcion` varchar(400) NOT NULL,
+  `razonSocial` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cuit` varchar(14) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`entityId`),
   CONSTRAINT `proveedor_entity_FK` FOREIGN KEY (`entityId`) REFERENCES `entity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -687,9 +683,9 @@ DROP TABLE IF EXISTS `provincia`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `provincia` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
+  `nombre` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -698,9 +694,9 @@ CREATE TABLE `provincia` (
 
 LOCK TABLES `provincia` WRITE;
 /*!40000 ALTER TABLE `provincia` DISABLE KEYS */;
+INSERT INTO `provincia` VALUES (1,'Santa Fe'),(2,'Cordoba'),(3,'Corrientes');
 /*!40000 ALTER TABLE `provincia` ENABLE KEYS */;
 UNLOCK TABLES;
-
 
 --
 -- Table structure for table `rLineaVentaNotaCredito`
@@ -753,6 +749,7 @@ CREATE TABLE `rPermissionRole` (
 
 LOCK TABLES `rPermissionRole` WRITE;
 /*!40000 ALTER TABLE `rPermissionRole` DISABLE KEYS */;
+INSERT INTO `rPermissionRole` VALUES (1,1);
 /*!40000 ALTER TABLE `rPermissionRole` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -766,10 +763,10 @@ DROP TABLE IF EXISTS `reserva`;
 CREATE TABLE `reserva` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `fechaCreacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `apellido` varchar(100) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `telefono` varchar(20) NOT NULL,
-  `email` varchar(100) NOT NULL,
+  `apellido` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telefono` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fechaVencimiento` datetime NOT NULL,
   `importeSena` decimal(12,3) NOT NULL,
   `isEntregada` tinyint(1) NOT NULL DEFAULT '0',
@@ -798,9 +795,9 @@ DROP TABLE IF EXISTS `role`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `role` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -809,6 +806,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
+INSERT INTO `role` VALUES (1,'ADMIN'),(2,'EMPLOYEE'),(3,'USER');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -821,7 +819,7 @@ DROP TABLE IF EXISTS `rubro`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `rubro` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL,
+  `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -844,10 +842,11 @@ DROP TABLE IF EXISTS `telefono`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `telefono` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `caracteristica` varchar(10) NOT NULL,
-  `numero` varchar(20) NOT NULL,
+  `caracteristica` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `numero` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `entityId` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
+  KEY `entity_telefono_FK` (`entityId`),
   CONSTRAINT `entity_telefono_FK` FOREIGN KEY (`entityId`) REFERENCES `entity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -870,8 +869,8 @@ DROP TABLE IF EXISTS `telefonoProveedor`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `telefonoProveedor` (
   `telefonoId` int unsigned NOT NULL,
-  `caracteristica` varchar(10) NOT NULL,
-  `numero` varchar(20) NOT NULL,
+  `caracteristica` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `numero` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`telefonoId`),
   CONSTRAINT `telefonoProveedor_telefono_FK` FOREIGN KEY (`telefonoId`) REFERENCES `telefono` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -895,7 +894,7 @@ DROP TABLE IF EXISTS `tipoEntrega`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tipoEntrega` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL,
+  `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -918,9 +917,9 @@ DROP TABLE IF EXISTS `usuario`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usuario` (
   `entityId` int unsigned NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
+  `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `roleId` int unsigned NOT NULL,
   PRIMARY KEY (`entityId`),
   KEY `usuario_role_FK` (`roleId`),
@@ -935,6 +934,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES (1,'Admin','$2a$10$YNEtwYCuwJTvM.eahcbg0erBKMEkDITuHb5.JtWYYQHP6dxa.bVTK','some@mail.jp',1),(3,'empleado','$2y$10$JMk0pfWw.KS5Y6XfRom0HO1WK.hXPbeJyYM9WX7CmRYanRefVKbuC','empelado@mail.jp',2),(4,'usuario','$2y$10$HrGxwEleiVpg/lu4yznZGeRIF7NkqLyKNndEsazll9bp8eAvAWfIG','usuario@mail.com',3);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -950,7 +950,7 @@ CREATE TABLE `venta` (
   `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `numeroComprobante` int unsigned NOT NULL,
   `isEntregada` tinyint(1) NOT NULL DEFAULT '0',
-  `nota` varchar(400) NOT NULL,
+  `nota` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tipoEntregaId` int unsigned NOT NULL,
   `descuentoId` int unsigned NOT NULL,
   `medioPagoId` int unsigned NOT NULL,
@@ -985,4 +985,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-27 21:11:48
+-- Dump completed on 2021-02-07 19:38:46
