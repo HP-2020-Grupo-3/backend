@@ -1,11 +1,13 @@
 package com.hp2020g3.venidemary.model;
 
+import org.springframework.security.core.userdetails.User;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "usuario")
 @PrimaryKeyJoinColumn(name = "entityId")
-public class Usuario extends BaseEntity{
+public class Usuario extends BaseEntity {
 
     private String nombre;
     private String password;
