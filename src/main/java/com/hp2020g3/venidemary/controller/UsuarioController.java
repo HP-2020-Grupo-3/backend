@@ -28,7 +28,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.findById(id));
     }
     
-    @GetMapping("/usuario/base")
+    @GetMapping("/usuario/new")
     public ResponseEntity getBaseDto() {
 
         return ResponseEntity.ok(usuarioService.getBaseDto());

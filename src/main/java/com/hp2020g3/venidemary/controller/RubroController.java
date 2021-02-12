@@ -29,7 +29,7 @@ public class RubroController {
         return ResponseEntity.ok(rubroService.findById(id));
     }
 
-    @GetMapping("/rubro/base")
+    @GetMapping("/rubro/new")
     public ResponseEntity getBaseDto() {
 
         return ResponseEntity.ok(rubroService.getBaseDto());

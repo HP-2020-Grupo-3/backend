@@ -22,6 +22,11 @@ public class RubroService {
 
         return rubroRepository.findById(id);
     }
+    
+    public Optional<Rubro> findByNombre(String nombre) {
+
+        return rubroRepository.findByNombre(nombre);
+    }
 
     public Rubro save(Rubro rubro) {
         return rubroRepository.save(rubro);

@@ -29,7 +29,7 @@ public class VenidemaryApplication {
 				registry.addMapping("/**")
 						.allowedOrigins("*")
 						.allowedHeaders("*")
-						.allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE, OPTIONS");
+						.allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS");
 
 			}
 		};
