@@ -2,8 +2,6 @@ package com.hp2020g3.venidemary.controller;
 
 import com.hp2020g3.venidemary.model.Articulo;
 import com.hp2020g3.venidemary.service.ArticuloService;
-import com.hp2020g3.venidemary.service.RubroService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,9 +17,6 @@ public class ArticuloController {
 	
 	@Autowired
     private ArticuloService articuloService;
-	
-	@Autowired
-	private RubroService rubroService;
 	
     @GetMapping("/articulo")
     public ResponseEntity getAll() {
@@ -57,6 +52,5 @@ public class ArticuloController {
 
         return ResponseEntity.ok("{}");
     }
-	
-    
+	    
 }

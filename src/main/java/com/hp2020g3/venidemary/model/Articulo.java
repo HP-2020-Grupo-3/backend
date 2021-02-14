@@ -3,7 +3,6 @@ package com.hp2020g3.venidemary.model;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +25,7 @@ public class Articulo {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "rubroId")
 	private Rubro rubro;
-	
+		
 	public Articulo() {}
 		
 	public Articulo(Integer id, String nombre, String descripcion, String imagen, Integer stockActual,
@@ -115,6 +114,4 @@ public class Articulo {
 		this.rubro = rubro;
 	}
 	
-	
-
 }
