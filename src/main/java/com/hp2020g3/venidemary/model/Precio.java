@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity(name="precio")
 public class Precio {
 	
@@ -15,6 +17,7 @@ public class Precio {
 	private Date fecha;
 	
 	@OneToMany(mappedBy="precio", fetch = FetchType.LAZY)
+	@JsonIgnore
     private List<LineaVenta> lineaVentaList;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
