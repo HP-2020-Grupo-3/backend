@@ -20,27 +20,25 @@ public class LineaVenta {
 	@JoinColumn(name = "precioId")
 	private Precio precio;
 	
-	
-	//TODO Clases ComprobantePago y Venta
-	/*
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "comprobantePagoId")
 	private ComprobantePago comprobantePago;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ventaId")
 	private Venta venta;
-	*/
 	
 	public LineaVenta() {}
 	
-	public LineaVenta (Integer id, Integer cantidad, boolean isPago, Articulo articulo, Precio precio ) {
+	public LineaVenta (Integer id, Integer cantidad, boolean isPago, Articulo articulo, Precio precio, ComprobantePago comprobantePago, Venta venta) {
 		
 		this.id = id;
 		this.cantidad = cantidad;
 		this.isPago = isPago;
 		this.articulo = articulo;
 		this.precio = precio;
+		this.comprobantePago = comprobantePago;
+		this.venta = venta;
 	}
 
 	public Integer getId() {
@@ -82,5 +80,20 @@ public class LineaVenta {
 	public void setPrecio(Precio precio) {
 		this.precio = precio;
 	}
-	
+
+	public ComprobantePago getComprobantePago() {
+		return comprobantePago;
+	}
+
+	public void setComprobantePago(ComprobantePago comprobantePago) {
+		this.comprobantePago = comprobantePago;
+	}
+
+	public Venta getVenta() {
+		return venta;
+	}
+
+	public void setVenta(Venta venta) {
+		this.venta = venta;
+	}
 }
