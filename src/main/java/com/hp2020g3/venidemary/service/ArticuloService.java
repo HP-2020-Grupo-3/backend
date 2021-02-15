@@ -49,44 +49,30 @@ public class ArticuloService {
     }    
 
         
-	public Articulo save(Articulo articulo) {
-	    
-		if (articulo.getRubro() != null) {
-			return articuloRepository.save(articulo);
-		} else {
-			Optional<Rubro> rubroGenerico = rubroService.findByNombre("GENERICO");
-	    		if (rubroGenerico.isPresent()) {
-		    	articulo.setRubro(rubroGenerico.get());
-		    	return articuloRepository.save(articulo);
-	    		} else {
-	    			// TODO: Tirar error de que no existe el rol para el articulo
-	    			return articulo;
-	    		}
-	    }     	
-        
+	public ArticuloDto save(ArticuloDto articuloDto) {
+
+	    Optional<Rubro> rubro = null;
+	    if (articuloDto.getCurrentRubro() != null) {
+            rubro = rubroService.findById(articuloDto.getCurrentRubro().getId());
+        }
+
+	    if (rubro == null || !rubro.isPresent()) {
+            rubro = rubroService.getDefault();
+        }
+	    Articulo articulo = new Articulo(articuloDto, rubro.get());
+
+		return new ArticuloDto(articuloRepository.save(articulo), rubroRepository.findAll());
     }
 	
-	public Articulo save(Articulo articulo, Rubro rubro) {
-		articulo.setRubro(rubro);
-		return articuloRepository.save(articulo);
-	}
+    public ArticuloDto update(ArticuloDto articuloDto) {
+        Optional<Articulo> articulo =  this.findById(articuloDto.getId());
 
-    public Articulo update(Articulo newArticulo) {
-        Optional<Articulo> articulo =  this.findById(newArticulo.getId());
-
-        if (articulo.isPresent()) {
-            articulo.get().setNombre(newArticulo.getNombre());
-            articulo.get().setDescripcion(newArticulo.getDescripcion());
-            articulo.get().setImagen(newArticulo.getImagen());
-            articulo.get().setStockDeseado(newArticulo.getStockDeseado());
-            articulo.get().setStockActual(newArticulo.getStockActual());
-            articulo.get().setRubro(newArticulo.getRubro());
-            return this.save(articulo.get());
-        } else {
+        if (!articulo.isPresent()) {
             // TODO: Esto deberia tirar un error de que rubro que intetas actuializar no existe.
-            newArticulo.setId(null);
-            return this.save(newArticulo);
+            articuloDto.setId(null);
         }
+
+        return this.save(articuloDto);
     }
 
     public Boolean deleteById(Integer id) {
@@ -96,7 +82,8 @@ public class ArticuloService {
     	if (articulo.isPresent()) {
             articulo.get().setIsDeleted(true);
             articulo.get().setDeletionDate(date);
-            this.save(articulo.get());
+            this.articuloRepository.save(articulo.get());
+
             return true;
         } else {
             // TODO: Esto deberia tirar un error de que no existe el ID de articulo a eliminar
@@ -108,7 +95,8 @@ public class ArticuloService {
     	
     	Articulo newArticulo = new Articulo();
     	Iterable<Rubro> rubroList = rubroRepository.findAll();
-        return new ArticuloDto(newArticulo, rubroList);
+
+    	return new ArticuloDto(newArticulo, rubroList);
     }
     
 }

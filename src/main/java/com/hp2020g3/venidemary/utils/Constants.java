@@ -11,4 +11,7 @@ public class Constants {
 	public static String AUTHORITIES_KEY = "CLAIM_TOKEN";
 	public static Integer ACCESS_TOKEN_VALIDITY_SECONDS = 28800;
 
+	// Defauld
+	public static Integer DEFAULT_RUBRO_ID = 1;
+
 }

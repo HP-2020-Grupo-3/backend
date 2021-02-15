@@ -51,7 +51,6 @@ public class TokenProvider {
 
 	public static String getUserName(final String token) {
 		final JwtParser jwtParser = Jwts.parser().setSigningKey(Constants.SIGNING_KEY);
-
 		final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
 
 		return claimsJws.getBody().getSubject();

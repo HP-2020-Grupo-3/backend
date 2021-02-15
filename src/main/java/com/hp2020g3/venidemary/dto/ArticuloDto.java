@@ -17,33 +17,35 @@ public class ArticuloDto {
 	private Rubro currentRubro;
 	private Iterable<Rubro> availableRubros;
 	
-public ArticuloDto (Articulo articulo, Iterable<Rubro> rubroList) {
-	
-	this.id = articulo.getId();
-	this.nombre = articulo.getNombre();
-	this.descripcion = articulo.getDescripcion();
-	this.imagen = articulo.getImagen();
-	this.stockActual = articulo.getStockActual();
-	this.stockDeseado = articulo.getStockDeseado();
-	this.currentRubro = articulo.getRubro();
-	this.availableRubros = rubroList;
-}
-	
-public ArticuloDto (Optional<Articulo> articulo, Iterable<Rubro> rubroList) {
-		
-	if(articulo.get() != null) {
-		this.id = articulo.get().getId();
-		this.nombre = articulo.get().getNombre();
-		this.descripcion = articulo.get().getDescripcion();
-		this.imagen = articulo.get().getImagen();
-		this.stockActual = articulo.get().getStockActual();
-		this.stockDeseado = articulo.get().getStockDeseado();
-		this.currentRubro = articulo.get().getRubro();
+	public ArticuloDto () {}
+
+	public ArticuloDto (Articulo articulo, Iterable<Rubro> rubroList) {
+
+		this.id = articulo.getId();
+		this.nombre = articulo.getNombre();
+		this.descripcion = articulo.getDescripcion();
+		this.imagen = articulo.getImagen();
+		this.stockActual = articulo.getStockActual();
+		this.stockDeseado = articulo.getStockDeseado();
+		this.currentRubro = articulo.getRubro();
 		this.availableRubros = rubroList;
-	} else {
-		//Tirar algun error
 	}
-}
+
+	public ArticuloDto (Optional<Articulo> articulo, Iterable<Rubro> rubroList) {
+
+		if(articulo.get() != null) {
+			this.id = articulo.get().getId();
+			this.nombre = articulo.get().getNombre();
+			this.descripcion = articulo.get().getDescripcion();
+			this.imagen = articulo.get().getImagen();
+			this.stockActual = articulo.get().getStockActual();
+			this.stockDeseado = articulo.get().getStockDeseado();
+			this.currentRubro = articulo.get().getRubro();
+			this.availableRubros = rubroList;
+		} else {
+			//Tirar algun error
+		}
+	}
 
 	public Integer getId() {
 		return id;

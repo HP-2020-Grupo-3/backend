@@ -1,5 +1,6 @@
 package com.hp2020g3.venidemary.controller;
 
+import com.hp2020g3.venidemary.dto.ArticuloDto;
 import com.hp2020g3.venidemary.model.Articulo;
 import com.hp2020g3.venidemary.service.ArticuloService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,13 @@ public class ArticuloController {
 
 
     @PostMapping("/articulo")
-    public ResponseEntity save(@RequestBody Articulo articulo) {
+    public ResponseEntity save(@RequestBody ArticuloDto articulo) {
         return ResponseEntity.ok(articuloService.save(articulo));
     }
 
     @PutMapping("/articulo")
-    ResponseEntity update(@RequestBody Articulo newArticulo) {
-        return ResponseEntity.ok(articuloService.update(newArticulo));
+    ResponseEntity update(@RequestBody ArticuloDto articuloDto) {
+        return ResponseEntity.ok(articuloService.update(articuloDto));
     }
 
     @DeleteMapping("/articulo/{id}")

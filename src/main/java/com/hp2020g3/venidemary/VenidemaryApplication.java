@@ -30,7 +30,6 @@ public class VenidemaryApplication {
 						.allowedOrigins("*")
 						.allowedHeaders("*")
 						.allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS");
-
 			}
 		};
 	}

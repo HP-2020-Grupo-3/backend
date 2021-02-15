@@ -3,6 +3,8 @@ package com.hp2020g3.venidemary.model;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hp2020g3.venidemary.dto.ArticuloDto;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +44,19 @@ public class Articulo {
 		this.rubro = rubro;
 	}
 
-	public Integer getId() {
+	public Articulo(ArticuloDto articuloDto, Rubro rubro) {
+		this.id = articuloDto.getId();
+		this.nombre = articuloDto.getNombre();
+		this.descripcion = articuloDto.getDescripcion();
+		this.imagen = articuloDto.getImagen();
+		this.stockActual = articuloDto.getStockActual();
+		this.stockDeseado = articuloDto.getStockDeseado();
+		this.deletionDate = null;
+		this.isDeleted = false;
+		this.rubro = rubro;
+	}
+
+    public Integer getId() {
 		return id;
 	}
 

@@ -2,6 +2,7 @@ package com.hp2020g3.venidemary.service;
 
 import com.hp2020g3.venidemary.model.Rubro;
 import com.hp2020g3.venidemary.repository.RubroRepository;
+import com.hp2020g3.venidemary.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,11 @@ public class RubroService {
 
         return rubroRepository.findById(id);
     }
-    
+
+    public Optional<Rubro> getDefault() {
+        return rubroRepository.findById(Constants.DEFAULT_RUBRO_ID);
+    }
+
     public Optional<Rubro> findByNombre(String nombre) {
 
         return rubroRepository.findByNombre(nombre);
