@@ -2,6 +2,8 @@ package com.hp2020g3.venidemary.service;
 
 import com.hp2020g3.venidemary.model.Role;
 import com.hp2020g3.venidemary.repository.RoleRepository;
+import com.hp2020g3.venidemary.utils.Constants;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
@@ -47,6 +49,10 @@ public class RoleService {
 
     public Role getBaseDto() {
         return new Role();
+    }
+    
+    public Optional<Role> getDefault(){
+    	return roleRepository.findById(Constants.DEFAULT_ROLE_ID);
     }
 } 
 

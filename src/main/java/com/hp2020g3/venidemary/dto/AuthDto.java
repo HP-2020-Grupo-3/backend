@@ -22,7 +22,7 @@ public class AuthDto {
     }
     public AuthDto(AuthenticatedUser user, String token) {
         this.id = user.getUsuario().getId();
-        this.username = user.getUsuario().getNombre();
+        this.username = user.getUsuario().getUsername();
         this.role = user.getAuthorities().iterator().next().toString();
         this.token = token;
     }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.hp2020g3.venidemary.model.Articulo;
 import com.hp2020g3.venidemary.model.Rubro;
+import com.hp2020g3.venidemary.utils.Constants;
 
 public class ArticuloDto {
 	

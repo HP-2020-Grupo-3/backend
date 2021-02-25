@@ -1,5 +1,6 @@
 package com.hp2020g3.venidemary.controller;
 
+import com.hp2020g3.venidemary.dto.UsuarioDto;
 import com.hp2020g3.venidemary.model.Usuario;
 import com.hp2020g3.venidemary.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class UsuarioController {
 
     @GetMapping("/usuario/{id}")
     public ResponseEntity getById(@PathVariable Integer id) {
-        return ResponseEntity.ok(usuarioService.findById(id));
+        return ResponseEntity.ok(usuarioService.findUsuarioDtoById(id));
     }
     
     @GetMapping("/usuario/new")
@@ -36,13 +37,13 @@ public class UsuarioController {
 
 
     @PostMapping("/usuario")
-    public ResponseEntity save(@RequestBody Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.save(usuario));
+    public ResponseEntity save(@RequestBody UsuarioDto usuarioDto) {
+        return ResponseEntity.ok(usuarioService.save(usuarioDto));
     }
 
     @PutMapping("/usuario")
-    ResponseEntity update(@RequestBody Usuario newUsuario) {
-        return ResponseEntity.ok(usuarioService.update(newUsuario));
+    ResponseEntity update(@RequestBody UsuarioDto newUsuarioDto) {
+        return ResponseEntity.ok(usuarioService.update(newUsuarioDto));
     }
 
     @DeleteMapping("/usuario/{id}")

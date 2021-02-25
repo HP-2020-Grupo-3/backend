@@ -1,8 +1,12 @@
 package com.hp2020g3.venidemary.service;
 
+import com.hp2020g3.venidemary.dto.ArticuloDto;
+import com.hp2020g3.venidemary.dto.UsuarioDto;
 import com.hp2020g3.venidemary.model.Role;
 import com.hp2020g3.venidemary.model.Usuario;
 import com.hp2020g3.venidemary.repository.UsuarioRepository;
+import com.hp2020g3.venidemary.repository.RoleRepository;
+import com.hp2020g3.venidemary.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Date;
@@ -15,7 +19,9 @@ public class UsuarioService {
 	@Autowired
 	private RoleService roleService;
 	
-	
+	@Autowired
+    private RoleRepository roleRepository;
+		
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -35,36 +41,37 @@ public class UsuarioService {
     public Optional<Usuario> findById(Integer id) {
         return usuarioRepository.findById(id);
     }
-
-    //TODO id de usuario tiene que ser asignado manualmente al DTO antes de llamar a Save
-    public Usuario save(Usuario usuario) {
-    	
-    	Optional<Role> role = roleService.findByName("Cliente");
-    	
-    	if (role.isPresent()) {
-    		usuario.setRole(role.get());
-    		return usuarioRepository.save(usuario);
-       	} else {
-       		// TODO: Tirar error de que no existe el rol para el usuario
-    		return usuario;
-    	}
+    
+	public UsuarioDto findUsuarioDtoById(Integer id) {
+	        
+	    return new UsuarioDto(usuarioRepository.findById(id), roleService.findAll());
     }
 
-    public Usuario update(Usuario newUsuario) {
-        Optional<Usuario> usuario =  this.findById(newUsuario.getId());
+    //TODO id de usuario tiene que ser asignado manualmente al DTO antes de llamar a Save
+    public UsuarioDto save(UsuarioDto usuarioDto) {
+    	
+    	Optional<Role> role = null;
+    	
+    	if (usuarioDto.getCurrentRole() != null) {
+    		role = roleService.findById(usuarioDto.getCurrentRole().getId());
+       	}
+    	
+    	if (role == null || !role.isPresent()) {
+    		role = roleService.getDefault();
+    	}
+    	Usuario usuario = new Usuario(usuarioDto, role.get());
+    	
+    	return new UsuarioDto( usuarioRepository.save(usuario), roleRepository.findAll());
+    }
 
-        if (usuario.isPresent()) {
-            usuario.get().setNombre(newUsuario.getNombre());
-            usuario.get().setPassword(newUsuario.getPassword());
-            usuario.get().setEmail(newUsuario.getEmail());
-            usuario.get().setRole(newUsuario.getRole());
-            usuario.get().setDirecciones(newUsuario.getDirecciones());
-            return this.save(usuario.get());
-        } else {
-            // TODO: Esto deberia tirar un error de que rubro que intetas actuializar no existe.
-            newUsuario.setId(null);
-            return this.save(newUsuario);
+    public UsuarioDto update(UsuarioDto newUsuarioDto) {
+        Optional<Usuario> usuario =  this.findById(newUsuarioDto.getId());
+        System.out.println(usuario.get().getId());
+        if (!usuario.isPresent()) {
+            newUsuarioDto.setId(null);
         }
+        
+        return this.save(newUsuarioDto);
     }
 
     public Boolean deleteById(Integer id) {
@@ -74,16 +81,23 @@ public class UsuarioService {
     	if (usuario.isPresent()) {
             usuario.get().setDeleted(true);
             usuario.get().setDeletionDate(date);
-            this.save(usuario.get());
+            this.usuarioRepository.save(usuario.get());
             return true;
         } else {
             // TODO: Esto deberia tirar un error de que no existe el ID de usuario a eliminar
             return false;
         }
     }
-
-    public Usuario getBaseDto() {
-        return new Usuario();
+        
+    public UsuarioDto getBaseDto() {
+    	Optional<Role> role = roleService.getDefault();
+        
+    	Usuario newUsuario = new Usuario();
+    	if (role.isPresent()) {
+    		newUsuario.setRole(role.get());
+    	}
+    	Iterable<Role> roleList = roleService.findAll();
+    	return new UsuarioDto (newUsuario, roleList);
     }
     
     public static<T> Iterable<T> iteratorToIterable(Iterator<T> iterator) {

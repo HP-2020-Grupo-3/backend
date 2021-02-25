@@ -14,7 +14,7 @@ public class AuthenticatedUser extends User {
     private Usuario usuario;
 
     public AuthenticatedUser(Usuario user) {
-        super(user.getNombre(), user.getPassword(), getAuthorities(user));
+        super(user.getUsername(), user.getPassword(), getAuthorities(user));
         this.usuario = user;
     }
 

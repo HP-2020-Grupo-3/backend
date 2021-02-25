@@ -93,7 +93,11 @@ public class ArticuloService {
 
     public ArticuloDto getBaseDto() {
     	
+    	Optional<Rubro> rubro = rubroService.getDefault();
     	Articulo newArticulo = new Articulo();
+    	if (rubro.isPresent()) {
+    		newArticulo.setRubro(rubro.get());
+    	}
     	Iterable<Rubro> rubroList = rubroRepository.findAll();
 
     	return new ArticuloDto(newArticulo, rubroList);

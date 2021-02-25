@@ -2,6 +2,8 @@ package com.hp2020g3.venidemary.model;
 
 import org.springframework.security.core.userdetails.User;
 
+import com.hp2020g3.venidemary.dto.UsuarioDto;
+
 import javax.persistence.*;
 
 import java.util.ArrayList;
@@ -11,9 +13,11 @@ import java.util.List;
 @Entity(name = "usuario")
 @PrimaryKeyJoinColumn(name = "entityId")
 public class Usuario extends BaseEntity {
-
-    private String nombre;
+	
+    private String username;
     private String password;
+    private String nombre;
+    private String apellido;
     private String email;
     
     private EntityType entityType = new EntityType(1, "Usuario");
@@ -30,21 +34,33 @@ public class Usuario extends BaseEntity {
 
     public Usuario() {}
 
-    public Usuario(Integer id, EntityType entityType, Date creationDate, Date deletionDate, Boolean isDeleted, String nombre, String password, String email, Role role) {
+    public Usuario(Integer id, EntityType entityType, Date creationDate, Date deletionDate, Boolean isDeleted, String username, String password, String nombre, String apellido, String email, Role role) {
         super(id, entityType, creationDate, deletionDate, isDeleted);
         
-        this.nombre = nombre;
+        this.username = username;
         this.password = password;
+        this.nombre = nombre;
+        this.apellido = apellido;
         this.email = email;
         this.role = role;
     }
-
-    public String getNombre() {
-        return nombre;
+    
+    public Usuario(UsuarioDto usuarioDto, Role role ) {
+    	this.setId(usuarioDto.getId());
+    	this.username = usuarioDto.getUsername();
+        this.password = usuarioDto.getPassword();
+        this.nombre = usuarioDto.getNombre();
+        this.apellido = usuarioDto.getApellido();
+        this.email = usuarioDto.getEmail();
+        this.role = role;
+    }
+    
+    public String getUsername() {
+        return username;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -54,8 +70,24 @@ public class Usuario extends BaseEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+        
+    public String getNombre() {
+		return nombre;
+	}
 
-    public String getEmail() {
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public String getEmail() {
         return email;
     }
 
