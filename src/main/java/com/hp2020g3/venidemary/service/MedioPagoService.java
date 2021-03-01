@@ -1,6 +1,8 @@
 package com.hp2020g3.venidemary.service;
 
 import java.util.Optional;
+
+import com.hp2020g3.venidemary.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hp2020g3.venidemary.model.MedioPago;
@@ -52,10 +54,14 @@ public class MedioPagoService {
         }
     }
 	
-public MedioPago getBaseDto() {
+    public MedioPago getBaseDto() {
     	
     	MedioPago newMedioPago = new MedioPago();
         return newMedioPago;
+    }
+
+    public MedioPago getDefault() {
+	    return this.findById(Constants.DEFAULT_MEDIO_PAGO_ID).get();
     }
 
 }

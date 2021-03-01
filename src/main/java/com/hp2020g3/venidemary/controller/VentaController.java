@@ -1,5 +1,6 @@
 package com.hp2020g3.venidemary.controller;
 
+import com.hp2020g3.venidemary.dto.VentaDto;
 import com.hp2020g3.venidemary.model.Venta;
 import com.hp2020g3.venidemary.service.VentaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,14 @@ public class VentaController {
 
 
     @PostMapping("/venta")
-    public ResponseEntity save(@RequestBody Venta venta) {
+    public ResponseEntity save(@RequestBody VentaDto venta) {
         return ResponseEntity.ok(ventaService.save(venta));
     }
 
-    @PutMapping("/venta")
-    ResponseEntity update(@RequestBody Venta newVenta) {
-        return ResponseEntity.ok(ventaService.update(newVenta));
-    }
+//    @PutMapping("/venta")
+//    ResponseEntity update(@RequestBody Venta newVenta) {
+//        return ResponseEntity.ok(ventaService.update(newVenta));
+//    }
 
     @DeleteMapping("/venta/{id}")
     ResponseEntity delete(@PathVariable Integer id) {

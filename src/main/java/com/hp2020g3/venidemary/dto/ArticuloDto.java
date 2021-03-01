@@ -4,6 +4,7 @@ package com.hp2020g3.venidemary.dto;
 import java.util.Optional;
 
 import com.hp2020g3.venidemary.model.Articulo;
+import com.hp2020g3.venidemary.model.Precio;
 import com.hp2020g3.venidemary.model.Rubro;
 import com.hp2020g3.venidemary.utils.Constants;
 
@@ -15,13 +16,13 @@ public class ArticuloDto {
 	private String imagen;
 	private Integer stockActual;
 	private Integer stockDeseado;
+	private Double precio;
 	private Rubro currentRubro;
 	private Iterable<Rubro> availableRubros;
 	
 	public ArticuloDto () {}
 
-	public ArticuloDto (Articulo articulo, Iterable<Rubro> rubroList) {
-
+	public ArticuloDto (Articulo articulo) {
 		this.id = articulo.getId();
 		this.nombre = articulo.getNombre();
 		this.descripcion = articulo.getDescripcion();
@@ -29,23 +30,16 @@ public class ArticuloDto {
 		this.stockActual = articulo.getStockActual();
 		this.stockDeseado = articulo.getStockDeseado();
 		this.currentRubro = articulo.getRubro();
-		this.availableRubros = rubroList;
+		if (articulo.getPrecio() != null) {
+			this.precio = articulo.getPrecio().getValor();
+		} else {
+			this.precio = 0.0;
+		}
 	}
 
-	public ArticuloDto (Optional<Articulo> articulo, Iterable<Rubro> rubroList) {
-
-		if(articulo.get() != null) {
-			this.id = articulo.get().getId();
-			this.nombre = articulo.get().getNombre();
-			this.descripcion = articulo.get().getDescripcion();
-			this.imagen = articulo.get().getImagen();
-			this.stockActual = articulo.get().getStockActual();
-			this.stockDeseado = articulo.get().getStockDeseado();
-			this.currentRubro = articulo.get().getRubro();
-			this.availableRubros = rubroList;
-		} else {
-			//Tirar algun error
-		}
+	public ArticuloDto (Articulo articulo, Iterable<Rubro> rubroList) {
+		this(articulo);
+		this.availableRubros = rubroList;
 	}
 
 	public Integer getId() {
@@ -104,7 +98,6 @@ public class ArticuloDto {
 		this.currentRubro = currentRubro;
 	}
 
-
 	public Iterable<Rubro> getAvailableRubros() {
 		return availableRubros;
 	}
@@ -113,5 +106,12 @@ public class ArticuloDto {
 		this.availableRubros = availableRubros;
 	}
 	
-	
+	public Double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(Double precio) {
+		this.precio = precio;
+	}
+
 }

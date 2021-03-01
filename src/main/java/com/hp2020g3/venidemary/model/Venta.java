@@ -1,6 +1,7 @@
 package com.hp2020g3.venidemary.model;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity(name="venta")
@@ -14,10 +15,13 @@ public class Venta {
 	private boolean isEntregada;
 	private String nota;
 	
+	@OneToMany(mappedBy="venta", fetch = FetchType.LAZY)
+    private List<LineaVenta> lineaVentas;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tipoEntregaId")
 	private TipoEntrega tipoEntrega;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "descuentoId")
 	private Descuento descuento;
@@ -115,5 +119,20 @@ public class Venta {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
+	public boolean isEntregada() {
+		return isEntregada;
+	}
+
+	public void setEntregada(boolean entregada) {
+		isEntregada = entregada;
+	}
+
+	public List<LineaVenta> getLineaVentas() {
+		return lineaVentas;
+	}
+
+	public void setLineaVentas(List<LineaVenta> lineaVentas) {
+		this.lineaVentas = lineaVentas;
+	}
 }

@@ -1,6 +1,13 @@
 package com.hp2020g3.venidemary.service;
 
-import java.util.Optional;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import com.hp2020g3.venidemary.dto.LineaVentaDto;
+import com.hp2020g3.venidemary.dto.VentaDto;
+import com.hp2020g3.venidemary.model.Articulo;
+import com.hp2020g3.venidemary.model.LineaVenta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hp2020g3.venidemary.model.Venta;
@@ -10,9 +17,19 @@ import com.hp2020g3.venidemary.repository.VentaRepository;
 public class VentaService {
 	
 	@Autowired
-	VentaRepository ventaRepository;
-	
-	public Iterable<Venta> findAll() {
+	private VentaRepository ventaRepository;
+	@Autowired
+	private TipoEntregaService tipoEntregaService;
+	@Autowired
+	private DescuentoService descuentoService;
+	@Autowired
+	private MedioPagoService medioPagoService;
+	@Autowired
+    private ArticuloService articuloService;
+	@Autowired
+    private UsuarioService usuarioService;
+
+    public Iterable<Venta> findAll() {
         
         return ventaRepository.findAll();
 	                        
@@ -23,26 +40,38 @@ public class VentaService {
     	
     }
 	
-	public Venta save(Venta venta) {
-		return ventaRepository.save(venta);
+	public VentaDto save(VentaDto ventaDto) {
+        DateFormat df = new SimpleDateFormat("YDHmsS");
+        Venta venta = new Venta();
+
+
+        venta.setFecha(new Date());
+        venta.setNumeroComprobante(Integer.parseInt(df.format(venta.getFecha())));
+        venta.setIsEntregada(ventaDto.isEntregada());
+        venta.setNota(ventaDto.getNota());
+        venta.setTipoEntrega(ventaDto.getCurrentTipoEntrega());
+        venta.setDescuento(ventaDto.getCurrentDescuento());
+        venta.setMedioPago(ventaDto.getCurrentMedioPago());
+        venta.setUsuario(usuarioService.findById(ventaDto.getUsuarioId()).get());
+
+        List<LineaVenta> lineaVentas = new ArrayList<LineaVenta>();
+        for (LineaVentaDto lineaVentaDto : ventaDto.getLineaVentaDtos()) {
+            LineaVenta lineaVenta = new LineaVenta();
+            Articulo articulo = articuloService.findById(lineaVentaDto.getArticuloId()).get();
+
+            lineaVenta.setCantidad(lineaVentaDto.getCantidad());
+            lineaVenta.setIsPago(true);
+            lineaVenta.setArticulo(articulo);
+            lineaVenta.setPrecio(articulo.getPrecio());
+
+            lineaVentas.add(lineaVenta);
+        }
+        venta.setLineaVentas(lineaVentas);
+
+		return new VentaDto(ventaRepository.save(venta), tipoEntregaService.findAll(), descuentoService.findAllByIsHabilitado(true),
+                medioPagoService.findAll(), articuloService.findAllByIsDeleted());
 	}
 	
-	public Venta update(Venta newVenta) {
-        Optional<Venta> venta =  this.findById(newVenta.getId());
-
-        if (venta.isPresent()) {
-            venta.get().setFecha(newVenta.getFecha());
-            venta.get().setNumeroComprobante(newVenta.getNumeroComprobante());
-            venta.get().setIsEntregada(newVenta.getIsEntregada());
-            venta.get().setNota(newVenta.getNota());
-            return this.save(venta.get());
-        } else {
-            // TODO: Esto deberia tirar un error de que el venta que intentas actualizar no existe.
-            newVenta.setId(null);
-            return this.save(newVenta);
-        }
-    }
-
     public Boolean deleteById(Integer id) {
     	Optional<Venta> venta = ventaRepository.findById(id);
     	
@@ -54,11 +83,16 @@ public class VentaService {
             return false;
         }
     }
-	
-public Venta getBaseDto() {
-    	
-    	Venta newVenta = new Venta();
-        return newVenta;
+
+    public VentaDto getBaseDto() {
+	    VentaDto dto = new VentaDto(new Venta(), tipoEntregaService.findAll(), descuentoService.findAllByIsHabilitado(true),
+                medioPagoService.findAll(), articuloService.findAllByIsDeleted());
+
+	    dto.setCurrentDescuento(descuentoService.getDefault());
+	    dto.setCurrentMedioPago(medioPagoService.getDefault());
+	    dto.setCurrentTipoEntrega(tipoEntregaService.getDefault());
+
+        return dto;
     }
 
 }

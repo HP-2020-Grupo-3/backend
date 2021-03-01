@@ -1,6 +1,8 @@
 package com.hp2020g3.venidemary.service;
 
 import java.util.Optional;
+
+import com.hp2020g3.venidemary.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hp2020g3.venidemary.model.Descuento;
@@ -57,6 +59,14 @@ public Descuento getBaseDto() {
     	
     	Descuento newDescuento = new Descuento();
         return newDescuento;
+    }
+
+    public Iterable<Descuento> findAllByIsHabilitado(Boolean isHabilitado) {
+        return descuentoRepository.findAllByIsHabilitado(isHabilitado);
+    }
+
+    public Descuento getDefault() {
+	    return this.findById(Constants.DEFAULT_DESCUENTO_ID).get();
     }
 
 }

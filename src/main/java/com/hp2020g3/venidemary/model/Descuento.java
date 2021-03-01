@@ -1,5 +1,9 @@
 package com.hp2020g3.venidemary.model;
 
+import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+
 import javax.persistence.*;
 
 @Entity(name="descuento")
@@ -10,6 +14,9 @@ public class Descuento {
     private Integer id;
 	private Float valor;
 	private boolean isHabilitado;
+
+    @Formula("CONCAT(valor * 100, '%')")
+    private String displayText;
 	
 	public Descuento() {}
 	
@@ -38,5 +45,20 @@ public class Descuento {
 	public void setIsHabilitado(boolean isHabilitado) {
 		this.isHabilitado = isHabilitado;
 	}
-	
+
+	public boolean isHabilitado() {
+		return isHabilitado;
+	}
+
+	public void setHabilitado(boolean habilitado) {
+		isHabilitado = habilitado;
+	}
+
+	public String getDisplayText() {
+		return displayText;
+	}
+
+	public void setDisplayText(String displayText) {
+		this.displayText = displayText;
+	}
 }

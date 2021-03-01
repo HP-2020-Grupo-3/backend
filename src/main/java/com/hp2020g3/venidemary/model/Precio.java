@@ -13,24 +13,35 @@ public class Precio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 	
-	private Float valor;
+	private Double valor;
 	private Date fecha;
 	
 	@OneToMany(mappedBy="precio", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<LineaVenta> lineaVentaList;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "articuloId")
+	@JsonIgnore
 	private Articulo articulo;
 	
 	public Precio() {}
 	
-	public Precio(Integer id, Float valor, Date fecha, Articulo articulo) {
+	public Precio(Integer id, Double valor, Date fecha, Articulo articulo) {
 		this.id = id;
 		this.valor = valor;
 		this.fecha = fecha;
 		this.articulo = articulo;
+	}
+
+	public Precio(Double valor, Articulo articulo) {
+		this.valor = valor;
+		this.fecha = new Date();
+		this.articulo = articulo;
+	}
+
+	public Precio(double v) {
+		this.valor = v;
 	}
 
 	public Integer getId() {
@@ -41,11 +52,11 @@ public class Precio {
 		this.id = id;
 	}
 
-	public Float getValor() {
+	public Double getValor() {
 		return valor;
 	}
 
-	public void setValor(Float valor) {
+	public void setValor(Double valor) {
 		this.valor = valor;
 	}
 
