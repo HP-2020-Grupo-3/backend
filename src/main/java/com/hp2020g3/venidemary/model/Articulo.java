@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hp2020g3.venidemary.dto.ArticuloDto;
+import org.hibernate.annotations.JoinFormula;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,11 +28,15 @@ public class Articulo {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "rubroId")
 	private Rubro rubro;
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinFormula("(SELECT precio.id FROM precio WHERE precio.articuloId = id ORDER BY precio.fecha DESC LIMIT 1)")
+	private Precio precio;
 		
 	public Articulo() {}
-		
+
 	public Articulo(Integer id, String nombre, String descripcion, String imagen, Integer stockActual,
-			Integer stockDeseado, Date deletionDate, Boolean isDeleted, Rubro rubro) {
+					Integer stockDeseado, Date deletionDate, Boolean isDeleted, Rubro rubro) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -127,5 +132,12 @@ public class Articulo {
 	public void setRubro(Rubro rubro) {
 		this.rubro = rubro;
 	}
-	
+
+	public Precio getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(Precio precio) {
+		this.precio = precio;
+	}
 }

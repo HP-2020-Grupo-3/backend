@@ -1,5 +1,7 @@
 package com.hp2020g3.venidemary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity(name="lineaventa")
@@ -11,7 +13,7 @@ public class LineaVenta {
 	
 	private Integer cantidad;
 	private boolean isPago;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "articuloId")
 	private Articulo articulo;
@@ -24,8 +26,9 @@ public class LineaVenta {
 	@JoinColumn(name = "comprobantePagoId")
 	private ComprobantePago comprobantePago;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ventaId")
+	@JsonIgnore
 	private Venta venta;
 	
 	public LineaVenta() {}

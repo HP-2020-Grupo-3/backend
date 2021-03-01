@@ -14,5 +14,8 @@ public class Constants {
 	// Defauld
 	public static Integer DEFAULT_RUBRO_ID = 1;
 	public static Integer DEFAULT_ROLE_ID = 3;
+	public static Integer DEFAULT_MEDIO_PAGO_ID = 1;
+	public static Integer DEFAULT_TIPO_ENTREGA_ID = 1;
+	public static Integer DEFAULT_DESCUENTO_ID = 1;
 
 }

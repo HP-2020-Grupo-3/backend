@@ -1,8 +1,13 @@
 package com.hp2020g3.venidemary.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import com.hp2020g3.venidemary.exception.EntityNotFoundException;
+import com.hp2020g3.venidemary.model.Precio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +15,6 @@ import com.hp2020g3.venidemary.dto.ArticuloDto;
 import com.hp2020g3.venidemary.model.Articulo;
 import com.hp2020g3.venidemary.model.Rubro;
 import com.hp2020g3.venidemary.repository.ArticuloRepository;
-import com.hp2020g3.venidemary.repository.RubroRepository;
 
 @Service
 public class ArticuloService {
@@ -18,9 +22,6 @@ public class ArticuloService {
 	
 	@Autowired
 	private ArticuloRepository articuloRepository;
-	
-	@Autowired
-	private RubroRepository rubroRepository;
 	
 	@Autowired
 	private RubroService rubroService;
@@ -31,11 +32,13 @@ public class ArticuloService {
                         
     }
     
-    public Iterable<Articulo> findAllByIsDeleted() {
+    public Iterable<ArticuloDto> findAllByIsDeleted() {
     	
     	Iterable<Articulo> validArticles = articuloRepository.findAllByIsDeleted(false);
-    	return validArticles;
-    	
+        Iterable<Rubro> rubros = rubroService.findAll();
+    	return StreamSupport.stream(validArticles.spliterator(), false)
+                .map(articulo -> new ArticuloDto(articulo, rubros))
+                .collect(Collectors.toList());
     }
 
     public Optional<Articulo> findById(Integer id) {
@@ -44,9 +47,14 @@ public class ArticuloService {
     }
     
     public ArticuloDto findArticuloDtoById(Integer id) {
-        
-    	return new ArticuloDto(articuloRepository.findById(id), rubroService.findAll());
-    }    
+        Optional<Articulo> articulo = articuloRepository.findById(id);
+
+        if (articulo.isPresent()) {
+    	    return new ArticuloDto(articulo.get(), rubroService.findAll());
+        } else {
+            throw new EntityNotFoundException(String.format("El articulo %d no existe.", id));
+        }
+    }
 
         
 	public ArticuloDto save(ArticuloDto articuloDto) {
@@ -60,16 +68,23 @@ public class ArticuloService {
             rubro = rubroService.getDefault();
         }
 	    Articulo articulo = new Articulo(articuloDto, rubro.get());
+        Precio precio = new Precio(articuloDto.getPrecio(), articulo);
 
-		return new ArticuloDto(articuloRepository.save(articulo), rubroRepository.findAll());
+        articulo.setPrecio(precio);
+
+		return new ArticuloDto(articuloRepository.save(articulo), rubroService.findAll());
     }
 	
     public ArticuloDto update(ArticuloDto articuloDto) {
         Optional<Articulo> articulo =  this.findById(articuloDto.getId());
 
         if (!articulo.isPresent()) {
-            // TODO: Esto deberia tirar un error de que rubro que intetas actuializar no existe.
-            articuloDto.setId(null);
+            throw new EntityNotFoundException("El articulo que intenta actualizar no existe.");
+        }
+
+        if (articulo.get().getPrecio().getValor() != articuloDto.getPrecio()) {
+            Precio precio = new Precio(articuloDto.getPrecio(), articulo.get());
+            articulo.get().setPrecio(precio);
         }
 
         return this.save(articuloDto);
@@ -98,7 +113,7 @@ public class ArticuloService {
     	if (rubro.isPresent()) {
     		newArticulo.setRubro(rubro.get());
     	}
-    	Iterable<Rubro> rubroList = rubroRepository.findAll();
+    	Iterable<Rubro> rubroList = rubroService.findAll();
 
     	return new ArticuloDto(newArticulo, rubroList);
     }

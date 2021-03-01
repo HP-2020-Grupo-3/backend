@@ -1,6 +1,8 @@
 package com.hp2020g3.venidemary.service;
 
 import java.util.Optional;
+
+import com.hp2020g3.venidemary.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hp2020g3.venidemary.model.TipoEntrega;
@@ -51,11 +53,16 @@ public class TipoEntregaService {
             return false;
         }
     }
-	
-public TipoEntrega getBaseDto() {
+
+    public TipoEntrega getBaseDto() {
     	
     	TipoEntrega newTipoEntrega = new TipoEntrega();
         return newTipoEntrega;
     }
+
+    public TipoEntrega getDefault() {
+	    return this.findById(Constants.DEFAULT_TIPO_ENTREGA_ID).get();
+    }
+
 
 }

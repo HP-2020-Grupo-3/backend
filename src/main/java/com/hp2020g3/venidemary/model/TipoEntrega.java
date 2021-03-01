@@ -2,7 +2,7 @@ package com.hp2020g3.venidemary.model;
 
 import javax.persistence.*;
 
-@Entity(name="tipoentrega")
+@Entity(name="tipoEntrega")
 public class TipoEntrega {
 	
 	@Id
