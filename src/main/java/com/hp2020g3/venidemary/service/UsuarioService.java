@@ -8,6 +8,7 @@ import com.hp2020g3.venidemary.repository.UsuarioRepository;
 import com.hp2020g3.venidemary.repository.RoleRepository;
 import com.hp2020g3.venidemary.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Iterator;
@@ -24,6 +25,9 @@ public class UsuarioService {
 		
     @Autowired
     private UsuarioRepository usuarioRepository;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public Iterable<Usuario> findAll() {
     	    	               
@@ -59,6 +63,10 @@ public class UsuarioService {
     	if (role == null || !role.isPresent()) {
     		role = roleService.getDefault();
     	}
+    	
+    	String password = passwordEncoder.encode(usuarioDto.getPassword());
+    	usuarioDto.setPassword(password);
+    	
     	Usuario usuario = new Usuario(usuarioDto, role.get());
     	
     	return new UsuarioDto( usuarioRepository.save(usuario), roleRepository.findAll());
