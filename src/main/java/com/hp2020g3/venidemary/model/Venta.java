@@ -15,7 +15,7 @@ public class Venta {
 	private boolean isEntregada;
 	private String nota;
 	
-	@OneToMany(mappedBy="venta", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="venta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<LineaVenta> lineaVentas;
 
 	@ManyToOne(fetch = FetchType.EAGER)
