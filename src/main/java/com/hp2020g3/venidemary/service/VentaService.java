@@ -35,18 +35,18 @@ public class VentaService {
 	                        
     }
 	
-	public Optional<Venta> findById(Integer id) {
-        return ventaRepository.findById(id);
+	public VentaDto findById(Integer id) {
+        return new VentaDto(ventaRepository.save(ventaRepository.findById(id).get()), tipoEntregaService.findAll(), descuentoService.findAllByIsHabilitado(true),
+            medioPagoService.findAll(), articuloService.findAllByIsDeleted());
     	
     }
 	
 	public VentaDto save(VentaDto ventaDto) {
-        DateFormat df = new SimpleDateFormat("YDHmsS");
         Venta venta = new Venta();
 
 
         venta.setFecha(new Date());
-        venta.setNumeroComprobante(Integer.parseInt(df.format(venta.getFecha())));
+        venta.setNumeroComprobante(0);
         venta.setIsEntregada(ventaDto.isEntregada());
         venta.setNota(ventaDto.getNota());
         venta.setTipoEntrega(ventaDto.getCurrentTipoEntrega());

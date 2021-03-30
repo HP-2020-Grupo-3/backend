@@ -24,6 +24,7 @@ public class VentaDto {
 	private Iterable<MedioPago> availableMedioPago;
 	private Iterable<ArticuloDto> availableArticuloDto;
 
+	public VentaDto(){};
 
 	public VentaDto(Venta venta, Iterable<TipoEntrega> availableTipoEntrega, Iterable<Descuento> availableDescuento,
 					Iterable<MedioPago> availableMedioPago, Iterable<ArticuloDto> availableArticuloDto) {
