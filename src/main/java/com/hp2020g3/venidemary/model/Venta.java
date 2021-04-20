@@ -1,5 +1,7 @@
 package com.hp2020g3.venidemary.model;
 
+import org.hibernate.annotations.Formula;
+
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -16,7 +18,7 @@ public class Venta {
 	private String nota;
 	
 	@OneToMany(mappedBy="venta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<LineaVenta> lineaVentas;
+	private List<LineaVenta> lineasVenta;
 	
 	@OneToMany(mappedBy="venta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<LineaVentaCuentaCorriente> lineasVentaCuentaCorriente;
@@ -36,6 +38,13 @@ public class Venta {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuarioEntityId")
 	private Usuario usuario;
+
+	@Formula("(SELECT SUM(lineaVenta.cantidad * precio.valor) - SUM(lineaVenta.cantidad * precio.valor) * descuento.valor " +
+			"FROM lineaVenta  " +
+			"INNER JOIN precio ON (lineaVenta.precioId = precio.id)  " +
+			"INNER JOIN descuento ON (descuentoId = descuento.id)  " +
+			"WHERE lineaVenta.ventaId = id)")
+	private Double total;
 	
 	public Venta () {}
 	
@@ -131,20 +140,28 @@ public class Venta {
 		isEntregada = entregada;
 	}
 
-	public List<LineaVenta> getLineaVentas() {
-		return lineaVentas;
+	public List<LineaVenta> getLineasVenta() {
+		return lineasVenta;
 	}
 
-	public void setLineaVentas(List<LineaVenta> lineaVentas) {
-		this.lineaVentas = lineaVentas;
+	public void setLineasVenta(List<LineaVenta> lineasVenta) {
+		this.lineasVenta = lineasVenta;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
 	}
 
 	public List<LineaVentaCuentaCorriente> getLineasVentaCuentaCorriente() {
 		return lineasVentaCuentaCorriente;
 	}
 
-	public void setLineasVentasCuentaCorriente(List<LineaVentaCuentaCorriente> lineasVentasCuentaCorriente) {
-		this.lineasVentaCuentaCorriente = lineasVentasCuentaCorriente;
+	public void setLineasVentaCuentaCorriente(List<LineaVentaCuentaCorriente> lineasVentaCuentaCorriente) {
+		this.lineasVentaCuentaCorriente = lineasVentaCuentaCorriente;
 	}
 	
 	

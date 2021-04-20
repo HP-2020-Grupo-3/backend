@@ -11,11 +11,14 @@ public class Constants {
 	public static String AUTHORITIES_KEY = "CLAIM_TOKEN";
 	public static Integer ACCESS_TOKEN_VALIDITY_SECONDS = 28800;
 
-	// Defauld
+	// Default
 	public static Integer DEFAULT_RUBRO_ID = 1;
 	public static Integer DEFAULT_ROLE_ID = 3;
 	public static Integer DEFAULT_MEDIO_PAGO_ID = 1;
 	public static Integer DEFAULT_TIPO_ENTREGA_ID = 1;
 	public static Integer DEFAULT_DESCUENTO_ID = 1;
+
+	// Comprobantes
+	public static String CONTADOR_COMP_VENTA = "COMPROBANTE_VENTA";
 
 }
