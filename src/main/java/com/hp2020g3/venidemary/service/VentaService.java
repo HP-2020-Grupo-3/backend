@@ -1,13 +1,12 @@
 package com.hp2020g3.venidemary.service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.hp2020g3.venidemary.dto.LineaVentaDto;
 import com.hp2020g3.venidemary.dto.VentaDto;
 import com.hp2020g3.venidemary.model.Articulo;
 import com.hp2020g3.venidemary.model.LineaVenta;
+import com.hp2020g3.venidemary.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hp2020g3.venidemary.model.Venta;
@@ -28,6 +27,8 @@ public class VentaService {
     private ArticuloService articuloService;
 	@Autowired
     private UsuarioService usuarioService;
+	@Autowired
+    private ContadorService contadorService;
 
     public Iterable<Venta> findAll() {
         
@@ -44,9 +45,8 @@ public class VentaService {
 	public VentaDto save(VentaDto ventaDto) {
         Venta venta = new Venta();
 
-
         venta.setFecha(new Date());
-        venta.setNumeroComprobante(0);
+        venta.setNumeroComprobante(contadorService.getValor(Constants.CONTADOR_COMP_VENTA));
         venta.setIsEntregada(ventaDto.isEntregada());
         venta.setNota(ventaDto.getNota());
         venta.setTipoEntrega(ventaDto.getCurrentTipoEntrega());
@@ -63,13 +63,17 @@ public class VentaService {
             lineaVenta.setIsPago(true);
             lineaVenta.setArticulo(articulo);
             lineaVenta.setPrecio(articulo.getPrecio());
+            lineaVenta.setVenta(venta);
 
             lineaVentas.add(lineaVenta);
         }
-        venta.setLineaVentas(lineaVentas);
+        venta.setLineasVenta(lineaVentas);
 
-		return new VentaDto(ventaRepository.save(venta), tipoEntregaService.findAll(), descuentoService.findAllByIsHabilitado(true),
+		ventaDto = new VentaDto(ventaRepository.save(venta), tipoEntregaService.findAll(), descuentoService.findAllByIsHabilitado(true),
                 medioPagoService.findAll(), articuloService.findAllByIsDeleted());
+		contadorService.increaseAndSave(Constants.CONTADOR_COMP_VENTA);
+
+		return ventaDto;
 	}
 	
     public Boolean deleteById(Integer id) {
