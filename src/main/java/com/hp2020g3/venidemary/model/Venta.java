@@ -17,6 +17,9 @@ public class Venta {
 	
 	@OneToMany(mappedBy="venta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<LineaVenta> lineaVentas;
+	
+	@OneToMany(mappedBy="venta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<LineaVentaCuentaCorriente> lineasVentaCuentaCorriente;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tipoEntregaId")
@@ -135,4 +138,14 @@ public class Venta {
 	public void setLineaVentas(List<LineaVenta> lineaVentas) {
 		this.lineaVentas = lineaVentas;
 	}
+
+	public List<LineaVentaCuentaCorriente> getLineasVentaCuentaCorriente() {
+		return lineasVentaCuentaCorriente;
+	}
+
+	public void setLineasVentasCuentaCorriente(List<LineaVentaCuentaCorriente> lineasVentasCuentaCorriente) {
+		this.lineasVentaCuentaCorriente = lineasVentasCuentaCorriente;
+	}
+	
+	
 }
