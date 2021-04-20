@@ -11,7 +11,7 @@ public class VentaDto {
     private Integer id;
 	private Date fecha;
 	private Integer numeroComprobante;
-	private boolean isEntregada;
+	private Boolean isEntregada;
 	private String nota;
 	private TipoEntrega currentTipoEntrega;
 	private Descuento currentDescuento;
@@ -43,8 +43,8 @@ public class VentaDto {
 		this.availableArticuloDto = availableArticuloDto;
 
 		this.lineaVentaDtos = new ArrayList<LineaVentaDto>();
-		if (venta.getLineaVentas() != null) {
-			for (LineaVenta lineaVenta: venta.getLineaVentas()) {
+		if (venta.getLineasVenta() != null) {
+			for (LineaVenta lineaVenta: venta.getLineasVenta()) {
 				this.lineaVentaDtos.add(new LineaVentaDto(lineaVenta));
 			}
 		}
@@ -74,11 +74,11 @@ public class VentaDto {
 		this.numeroComprobante = numeroComprobante;
 	}
 
-	public boolean isEntregada() {
+	public Boolean isEntregada() {
 		return isEntregada;
 	}
 
-	public void setEntregada(boolean entregada) {
+	public void setEntregada(Boolean entregada) {
 		isEntregada = entregada;
 	}
 
