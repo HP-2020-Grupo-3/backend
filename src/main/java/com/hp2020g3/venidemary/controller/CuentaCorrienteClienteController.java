@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.hp2020g3.venidemary.dto.CuentaCorrienteClienteDto;
 import com.hp2020g3.venidemary.model.CuentaCorrienteCliente;
 import com.hp2020g3.venidemary.service.CuentaCorrienteClienteService;
 
@@ -21,6 +23,11 @@ public class CuentaCorrienteClienteController {
     @GetMapping("/cuentaCorrienteCliente")
     public ResponseEntity getAll() {
         return ResponseEntity.ok(cuentaCorrienteClienteService.findAll());
+    }
+    
+    @GetMapping("/cuentaCorrienteCliente/aprobacion")
+    public ResponseEntity getAllNotAprobada() {
+        return ResponseEntity.ok(cuentaCorrienteClienteService.findAllNotAprobada());
     }
 
     @GetMapping("/cuentaCorrienteCliente/{id}")
@@ -40,7 +47,7 @@ public class CuentaCorrienteClienteController {
     }
 
     @PutMapping("/cuentaCorrienteCliente")
-    ResponseEntity update(@RequestBody CuentaCorrienteCliente newCuentaCorrienteCliente) {
+    ResponseEntity update(@RequestBody CuentaCorrienteClienteDto newCuentaCorrienteCliente) {
         return ResponseEntity.ok(cuentaCorrienteClienteService.update(newCuentaCorrienteCliente));
     }
 

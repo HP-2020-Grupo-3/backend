@@ -5,8 +5,10 @@ import com.hp2020g3.venidemary.model.CuentaCorrienteCliente;
 
 public interface CuentaCorrienteClienteRepository extends CrudRepository<CuentaCorrienteCliente, Integer> {
 	
-	Iterable<CuentaCorrienteCliente> findAllByIsAprobada(Boolean isAprobada);
+	Iterable<CuentaCorrienteCliente> findByIsAprobada(Boolean isAprobada);
 	
-	Iterable<CuentaCorrienteCliente> findAllByIsDeleted(Boolean isDeleted);
+	Iterable<CuentaCorrienteCliente> findByIsDeleted(Boolean isDeleted);
+	
+	Iterable<CuentaCorrienteCliente> findByIsAprobadaAndIsDeleted(Boolean isAprobada, Boolean isDeleted);
 
 }
