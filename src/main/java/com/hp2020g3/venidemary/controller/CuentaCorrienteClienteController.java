@@ -56,6 +56,4 @@ public class CuentaCorrienteClienteController {
     	cuentaCorrienteClienteService.deleteById(id);
         return ResponseEntity.ok("{}");
     }
-
-
 }

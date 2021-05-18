@@ -14,11 +14,10 @@ public class CuentaCorrienteClienteDto {
 	private Date fechaCreacion;
 	private boolean isAprobada;
 	private boolean isDeleted;
-	private Integer cantidadAprobacion;
-	
+
 	public CuentaCorrienteClienteDto() {}
 	
-	public CuentaCorrienteClienteDto(CuentaCorrienteCliente cuentaCorrienteCliente, Integer cantidadAprobacion) {
+	public CuentaCorrienteClienteDto(CuentaCorrienteCliente cuentaCorrienteCliente) {
 		this.id = cuentaCorrienteCliente.getId();
 		this.username = cuentaCorrienteCliente.getUsuario().getUsername();
 		this.nombre = cuentaCorrienteCliente.getUsuario().getNombre();
@@ -26,7 +25,6 @@ public class CuentaCorrienteClienteDto {
 		this.fechaCreacion = cuentaCorrienteCliente.getFechaCreacion();
 		this.isAprobada = cuentaCorrienteCliente.getIsAprobada();
 		this.isDeleted = cuentaCorrienteCliente.getIsDeleted();
-		this.cantidadAprobacion = cantidadAprobacion;
 	}
 
 	public Integer getId() {
@@ -84,13 +82,4 @@ public class CuentaCorrienteClienteDto {
 	public void setIsDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-
-	public Integer getCantidadAprobacion() {
-		return cantidadAprobacion;
-	}
-
-	public void setCantidadAprobacion(Integer cantidadAprobacion) {
-		this.cantidadAprobacion = cantidadAprobacion;
-	}
-	
 }

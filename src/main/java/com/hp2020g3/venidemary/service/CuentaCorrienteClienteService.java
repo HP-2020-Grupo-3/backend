@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import com.hp2020g3.venidemary.dto.CuentaCorrienteClientesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hp2020g3.venidemary.dto.CuentaCorrienteClienteDto;
@@ -18,8 +20,9 @@ public class CuentaCorrienteClienteService {
 	private CuentaCorrienteClienteRepository cuentaCorrienteClienteRepository;
 	Integer cantidadAprobacion = 0;
 	
-	public Iterable<CuentaCorrienteClienteDto> findAll() {
-        
+	public CuentaCorrienteClientesDto findAll() {
+        CuentaCorrienteClientesDto mainDto = new CuentaCorrienteClientesDto();
+
 		cantidadAprobacion = 0;
 		Iterable<CuentaCorrienteCliente> cuentaCorrienteClientes = cuentaCorrienteClienteRepository.findByIsAprobadaAndIsDeleted(true, false);
 		Iterable<CuentaCorrienteCliente> cuentasCorrientesPendientesAprobacion = cuentaCorrienteClienteRepository.findByIsAprobadaAndIsDeleted(false, false);
@@ -29,11 +32,13 @@ public class CuentaCorrienteClienteService {
 			iterator.next();
 			cantidadAprobacion++;
 		}
-				
-		return StreamSupport.stream(cuentaCorrienteClientes.spliterator(), false)
-                .map(cuentaCorrienteCliente -> new CuentaCorrienteClienteDto(cuentaCorrienteCliente, cantidadAprobacion))
-                .collect(Collectors.toList());
-		                      
+
+		mainDto.setCantidadAprobacion(cantidadAprobacion);
+		mainDto.setCuentaCorrienteClienteDtos(StreamSupport.stream(cuentaCorrienteClientes.spliterator(), false)
+                .map(cuentaCorrienteCliente -> new CuentaCorrienteClienteDto(cuentaCorrienteCliente))
+                .collect(Collectors.toList()));
+
+		return mainDto;
     }
 	
 	public Iterable<CuentaCorrienteClienteDto> findAllNotAprobada() {
@@ -41,7 +46,7 @@ public class CuentaCorrienteClienteService {
 		Iterable<CuentaCorrienteCliente> cuentaCorrienteClientes = cuentaCorrienteClienteRepository.findByIsAprobadaAndIsDeleted(false, false);
 		
 		return StreamSupport.stream(cuentaCorrienteClientes.spliterator(), false)
-                .map(cuentaCorrienteCliente -> new CuentaCorrienteClienteDto(cuentaCorrienteCliente, 0))
+                .map(cuentaCorrienteCliente -> new CuentaCorrienteClienteDto(cuentaCorrienteCliente))
                 .collect(Collectors.toList());
        
 	}
@@ -51,7 +56,7 @@ public class CuentaCorrienteClienteService {
 		Optional<CuentaCorrienteCliente> cuentaCorrienteCliente = cuentaCorrienteClienteRepository.findById(id);
 		
 		if (cuentaCorrienteCliente.isPresent()) {
-			return new CuentaCorrienteClienteDto(cuentaCorrienteCliente.get(), 0);
+			return new CuentaCorrienteClienteDto(cuentaCorrienteCliente.get());
 		} else {
             throw new EntityNotFoundException(String.format("La Cuenta Corriente %d no existe.", id));
         }
