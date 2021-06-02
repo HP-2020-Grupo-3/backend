@@ -31,6 +31,9 @@ public class Usuario extends BaseEntity {
     
     @OneToMany(mappedBy ="usuario", fetch = FetchType.LAZY)
     private List<Direccion> direcciones;
+    
+    @OneToOne(mappedBy ="usuario", fetch = FetchType.LAZY)
+    private CuentaCorrienteCliente cuentaCorrienteCliente;
 
     public Usuario() {}
 

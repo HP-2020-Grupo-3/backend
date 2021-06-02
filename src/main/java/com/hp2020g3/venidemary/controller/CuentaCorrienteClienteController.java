@@ -42,7 +42,7 @@ public class CuentaCorrienteClienteController {
 
 
     @PostMapping("/cuentaCorrienteCliente")
-    public ResponseEntity save(@RequestBody CuentaCorrienteCliente cuentaCorrienteCliente) {
+    public ResponseEntity save(@RequestBody CuentaCorrienteClienteDto cuentaCorrienteCliente) {
         return ResponseEntity.ok(cuentaCorrienteClienteService.save(cuentaCorrienteCliente));
     }
 

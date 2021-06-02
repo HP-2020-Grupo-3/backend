@@ -35,11 +35,21 @@ public class UsuarioService {
                         
     }
     
+    public Iterable<Usuario> findValidUsersForCC() {
+    	
+    	return usuarioRepository.findValidUsersForCC();
+    	   	
+    }
+    
     public Iterable<Usuario> findByIsDeleted() {
     	
     	Iterable<Usuario> validUsers = usuarioRepository.findByIsDeleted(false);
     	return validUsers;
     	
+    }
+    
+    public Iterable<Usuario> findByRoleId(Integer roleId) {
+    	return usuarioRepository.findByRoleId(roleId);
     }
 
     public Optional<Usuario> findById(Integer id) {

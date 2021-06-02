@@ -4,20 +4,26 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
 import com.hp2020g3.venidemary.dto.CuentaCorrienteClientesDto;
+import com.hp2020g3.venidemary.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hp2020g3.venidemary.dto.CuentaCorrienteClienteDto;
-import com.hp2020g3.venidemary.exception.EntityNotFoundException;
 import com.hp2020g3.venidemary.model.CuentaCorrienteCliente;
+import com.hp2020g3.venidemary.model.Usuario;
 import com.hp2020g3.venidemary.repository.CuentaCorrienteClienteRepository;
+import com.hp2020g3.venidemary.repository.UsuarioRepository;
+
 
 @Service
 public class CuentaCorrienteClienteService {
 	
 	@Autowired
 	private CuentaCorrienteClienteRepository cuentaCorrienteClienteRepository;
+	
+	@Autowired
+	private UsuarioService usuarioService;
+		
 	Integer cantidadAprobacion = 0;
 	
 	public CuentaCorrienteClientesDto findAll() {
@@ -88,14 +94,31 @@ public class CuentaCorrienteClienteService {
 			return cuentaCorrienteClienteRepository.save(cuentaCorrienteCliente.get());
 			 
 		}
-		throw new EntityNotFoundException(String.format("El estado de cuenta corriente %d no existe.", newCuentaCorrienteCliente.getId()));
+		throw new EntityNotFoundException(String.format("La cuenta corriente %d no existe.", newCuentaCorrienteCliente.getId()));
 	}
 	
-	public CuentaCorrienteCliente save (CuentaCorrienteCliente newCuentaCorrienteCliente) {
-		return cuentaCorrienteClienteRepository.save(newCuentaCorrienteCliente);
+	public CuentaCorrienteCliente save (CuentaCorrienteClienteDto cuentaCorrienteClienteDto) {
+		CuentaCorrienteCliente cc = new CuentaCorrienteCliente();
+		Optional<Usuario> usuario = usuarioService.findById(cuentaCorrienteClienteDto.getUsuarioId());
+		
+		cc.setFechaCreacion(cuentaCorrienteClienteDto.getFechaCreacion());
+		cc.setIsAprobada(cuentaCorrienteClienteDto.getIsAprobada());
+		cc.setIsDeleted(cuentaCorrienteClienteDto.getIsDeleted());
+		cc.setFechaDeletion(null);
+		if (usuario.isPresent()) {
+			cc.setUsuario(usuario.get());
+			return cuentaCorrienteClienteRepository.save(cc);
+		} else {
+			throw new EntityNotFoundException(String.format("El usuario %d no existe.", cuentaCorrienteClienteDto.getId()));
+		}
+		
 	}
 	
-	public CuentaCorrienteCliente getBaseDto() {
-		return new CuentaCorrienteCliente();
+	public CuentaCorrienteClienteDto getBaseDto() {
+		
+		Iterable<Usuario> usuarios = usuarioService.findValidUsersForCC();
+		
+		return new CuentaCorrienteClienteDto(usuarios);
+	
 	}
 }

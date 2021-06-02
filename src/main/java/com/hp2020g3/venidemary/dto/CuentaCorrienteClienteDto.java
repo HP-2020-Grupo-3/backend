@@ -1,8 +1,16 @@
 package com.hp2020g3.venidemary.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.hp2020g3.venidemary.model.CuentaCorrienteCliente;
+import com.hp2020g3.venidemary.model.LineaVenta;
+import com.hp2020g3.venidemary.model.Usuario;
 
 
 public class CuentaCorrienteClienteDto {
@@ -14,6 +22,8 @@ public class CuentaCorrienteClienteDto {
 	private Date fechaCreacion;
 	private boolean isAprobada;
 	private boolean isDeleted;
+	private Integer usuarioId;
+	private List<UsuarioCCDto> usuarioCCDtos;
 
 	public CuentaCorrienteClienteDto() {}
 	
@@ -26,7 +36,21 @@ public class CuentaCorrienteClienteDto {
 		this.isAprobada = cuentaCorrienteCliente.getIsAprobada();
 		this.isDeleted = cuentaCorrienteCliente.getIsDeleted();
 	}
-
+	
+	public CuentaCorrienteClienteDto (Iterable<Usuario> usuarios) {
+		this.fechaCreacion = new Date();
+		this.isAprobada = false;
+		this.isDeleted = false;		
+		this.usuarioId = null;
+		System.out.println();
+		System.out.println(usuarios);
+		System.out.println();
+		usuarioCCDtos = StreamSupport.stream(usuarios.spliterator(), false)
+                .map(usuario -> new UsuarioCCDto(usuario))
+                .collect(Collectors.toList());
+		
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -81,5 +105,21 @@ public class CuentaCorrienteClienteDto {
 
 	public void setIsDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	public Integer getUsuarioId() {
+		return usuarioId;
+	}
+
+	public void setUsuarioId(Integer usuarioId) {
+		this.usuarioId = usuarioId;
+	}
+
+	public List<UsuarioCCDto> getUsuarioCCDtos() {
+		return usuarioCCDtos;
+	}
+
+	public void setUsuarioCCDtos(ArrayList<UsuarioCCDto> usuarioCCDtos) {
+		this.usuarioCCDtos = usuarioCCDtos;
 	}
 }
