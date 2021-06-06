@@ -98,20 +98,28 @@ public class CuentaCorrienteClienteService {
 	}
 	
 	public CuentaCorrienteCliente save (CuentaCorrienteClienteDto cuentaCorrienteClienteDto) {
-		CuentaCorrienteCliente cc = new CuentaCorrienteCliente();
-		Optional<Usuario> usuario = usuarioService.findById(cuentaCorrienteClienteDto.getUsuarioId());
 		
-		cc.setFechaCreacion(cuentaCorrienteClienteDto.getFechaCreacion());
-		cc.setIsAprobada(cuentaCorrienteClienteDto.getIsAprobada());
-		cc.setIsDeleted(cuentaCorrienteClienteDto.getIsDeleted());
-		cc.setFechaDeletion(null);
-		if (usuario.isPresent()) {
-			cc.setUsuario(usuario.get());
-			return cuentaCorrienteClienteRepository.save(cc);
+		Optional<CuentaCorrienteCliente> existCCforUser = cuentaCorrienteClienteRepository.findByUsuarioEntityId(cuentaCorrienteClienteDto.getUsuarioId());
+		
+		if (existCCforUser.isPresent()) {
+			existCCforUser.get().setIsAprobada(false);
+			existCCforUser.get().setIsDeleted(false);
+			existCCforUser.get().setFechaDeletion(null);
+			return cuentaCorrienteClienteRepository.save(existCCforUser.get());	
 		} else {
-			throw new EntityNotFoundException(String.format("El usuario %d no existe.", cuentaCorrienteClienteDto.getId()));
+			CuentaCorrienteCliente cc = new CuentaCorrienteCliente();
+			Optional<Usuario> usuario = usuarioService.findById(cuentaCorrienteClienteDto.getUsuarioId());
+			cc.setFechaCreacion(cuentaCorrienteClienteDto.getFechaCreacion());
+			cc.setIsAprobada(cuentaCorrienteClienteDto.getIsAprobada());
+			cc.setIsDeleted(cuentaCorrienteClienteDto.getIsDeleted());
+			cc.setFechaDeletion(null);
+			if (usuario.isPresent()) {
+				cc.setUsuario(usuario.get());
+				return cuentaCorrienteClienteRepository.save(cc);
+			} else {
+				throw new EntityNotFoundException(String.format("El usuario %d no existe.", cuentaCorrienteClienteDto.getId()));
+			}
 		}
-		
 	}
 	
 	public CuentaCorrienteClienteDto getBaseDto() {
