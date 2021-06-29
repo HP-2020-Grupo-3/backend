@@ -1,13 +1,13 @@
 package com.hp2020g3.venidemary.dto;
 
 import com.hp2020g3.venidemary.model.LineaVenta;
+import com.hp2020g3.venidemary.model.LineaVentaCuentaCorriente;
 import com.hp2020g3.venidemary.model.Precio;
 
 public class LineaVentaDto {
 
     private Integer id;
 	private Integer cantidad;
-    private boolean isPago;
     private Double precio;
     private String articuloNombre;
     private Integer articuloId;
@@ -17,11 +17,29 @@ public class LineaVentaDto {
     public LineaVentaDto(LineaVenta lineaVenta) {
         this.id = lineaVenta.getId();
         this.cantidad = lineaVenta.getCantidad();
-        this.isPago = lineaVenta.getIsPago();
         this.precio = lineaVenta.getPrecio().getValor();
         if (lineaVenta.getArticulo() != null) {
             this.articuloNombre = lineaVenta.getArticulo().getNombre();
             this.articuloId = lineaVenta.getArticulo().getId();
+        } else {
+            this.articuloNombre = null;
+            this.articuloId = null;
+        }
+    }
+
+    public LineaVentaDto(LineaVentaCuentaCorriente lineaVenta) {
+        this.id = lineaVenta.getId();
+        this.cantidad = lineaVenta.getCantidad();
+
+        if (lineaVenta.getPrecio() != null) {
+            this.precio = lineaVenta.getPrecio().getValor();
+        } else {
+            this.precio = lineaVenta.getEstadoCuentaCorriente().getArticulo().getPrecio().getValor();
+        }
+
+        if (lineaVenta.getEstadoCuentaCorriente().getArticulo() != null) {
+            this.articuloNombre = lineaVenta.getEstadoCuentaCorriente().getArticulo().getNombre();
+            this.articuloId = lineaVenta.getEstadoCuentaCorriente().getArticulo().getId();
         } else {
             this.articuloNombre = null;
             this.articuloId = null;
@@ -42,14 +60,6 @@ public class LineaVentaDto {
 
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
-    }
-
-    public boolean isPago() {
-        return isPago;
-    }
-
-    public void setPago(boolean pago) {
-        isPago = pago;
     }
 
     public Double getPrecio() {

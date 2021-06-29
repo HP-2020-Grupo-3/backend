@@ -39,11 +39,17 @@ public class Venta {
 	@JoinColumn(name = "usuarioEntityId")
 	private Usuario usuario;
 
-	@Formula("(SELECT SUM(lineaVenta.cantidad * precio.valor) - SUM(lineaVenta.cantidad * precio.valor) * descuento.valor " +
-			"FROM lineaVenta  " +
-			"INNER JOIN precio ON (lineaVenta.precioId = precio.id)  " +
-			"INNER JOIN descuento ON (descuentoId = descuento.id)  " +
-			"WHERE lineaVenta.ventaId = id)")
+	@Formula("(IFNULL( " +
+			"(SELECT SUM(lineaVenta.cantidad * precio.valor) - SUM(lineaVenta.cantidad * precio.valor) * descuento.valor " +
+			"FROM lineaVenta INNER JOIN precio ON (lineaVenta.precioId = precio.id) " +
+			"INNER JOIN descuento ON (1 = descuento.id) " +
+			"WHERE lineaVenta.ventaId = id), " +
+			"" +
+			"(SELECT SUM(lineaVentaCuentaCorriente.cantidad * precio.valor) - SUM(lineaVentaCuentaCorriente.cantidad * precio.valor) * descuento.valor " +
+			"FROM lineaVentaCuentaCorriente " +
+			"INNER JOIN precio ON (lineaVentaCuentaCorriente.precioId = precio.id) " +
+			"INNER JOIN descuento ON (descuentoId = descuento.id) " +
+			"WHERE lineaVentaCuentaCorriente.ventaId = id))) ")
 	private Double total;
 	
 	public Venta () {}

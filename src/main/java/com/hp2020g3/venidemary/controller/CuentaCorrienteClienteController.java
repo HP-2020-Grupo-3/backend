@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hp2020g3.venidemary.dto.CuentaCorrienteClienteDto;
-import com.hp2020g3.venidemary.model.CuentaCorrienteCliente;
 import com.hp2020g3.venidemary.service.CuentaCorrienteClienteService;
 
 @RestController
@@ -32,7 +31,7 @@ public class CuentaCorrienteClienteController {
 
     @GetMapping("/cuentaCorrienteCliente/{id}")
     public ResponseEntity getById(@PathVariable Integer id) {
-    	return ResponseEntity.ok(cuentaCorrienteClienteService.findById(id));
+    	return ResponseEntity.ok(cuentaCorrienteClienteService.findDtoById(id));
     }
     
     @GetMapping("/cuentaCorrienteCliente/new")

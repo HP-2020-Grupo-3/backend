@@ -16,6 +16,6 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
 	
 	Iterable<Usuario> findByRoleId(Integer roleId);
 	
-	@Query (value= "select * from usuario u inner join entity e on u.entityId = e.id inner join role r on u.roleId = r.id left join cuentacorrientecliente ccc on u.entityId = ccc.usuarioEntityId where r.id = 3 and ccc.usuarioEntityId is null", nativeQuery = true)
+	@Query (value= "select * from usuario u inner join entity e on u.entityId = e.id inner join role r on u.roleId = r.id left join cuentaCorrienteCliente ccc on u.entityId = ccc.usuarioEntityId where r.id = 3 and ccc.usuarioEntityId is null", nativeQuery = true)
 	Iterable<Usuario> findValidUsersForCC();
 }

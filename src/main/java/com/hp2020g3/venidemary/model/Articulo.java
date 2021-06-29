@@ -29,7 +29,7 @@ public class Articulo {
 	@JoinColumn(name = "rubroId")
 	private Rubro rubro;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinFormula("(SELECT precio.id FROM precio WHERE precio.articuloId = id ORDER BY precio.fecha DESC LIMIT 1)")
 	private Precio precio;
 		

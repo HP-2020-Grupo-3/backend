@@ -46,6 +46,10 @@ public class CuentaCorrienteClienteService {
 
 		return mainDto;
     }
+
+    public Iterable<CuentaCorrienteCliente> findByIsAprobadaAndIsDeleted(Boolean isAprobada, Boolean isDeleted) {
+		return cuentaCorrienteClienteRepository.findByIsAprobadaAndIsDeleted(isAprobada, isDeleted);
+	}
 	
 	public Iterable<CuentaCorrienteClienteDto> findAllNotAprobada() {
         
@@ -57,18 +61,21 @@ public class CuentaCorrienteClienteService {
        
 	}
 	
-	public CuentaCorrienteClienteDto findById(Integer id) {
+	public CuentaCorrienteCliente findById(Integer id) {
 		
 		Optional<CuentaCorrienteCliente> cuentaCorrienteCliente = cuentaCorrienteClienteRepository.findById(id);
 		
 		if (cuentaCorrienteCliente.isPresent()) {
-			return new CuentaCorrienteClienteDto(cuentaCorrienteCliente.get());
+			return cuentaCorrienteCliente.get();
 		} else {
             throw new EntityNotFoundException(String.format("La Cuenta Corriente %d no existe.", id));
         }
     	
     }
-	
+    public CuentaCorrienteClienteDto findDtoById(Integer id) {
+		return new CuentaCorrienteClienteDto(this.findById(id));
+    }
+
 	public Boolean deleteById(Integer id) {
     	Optional<CuentaCorrienteCliente> cuentaCorrienteCliente = cuentaCorrienteClienteRepository.findById(id);
     	    	

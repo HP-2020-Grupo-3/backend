@@ -1,5 +1,7 @@
 package com.hp2020g3.venidemary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,16 +20,19 @@ public class LineaVentaCuentaCorriente {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "estadoCuentaCorrienteId")
+	@JsonIgnore
 	private EstadoCuentaCorriente estadoCuentaCorriente;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ventaId")
+	@JsonIgnore
 	private Venta venta;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "precioId")
 	private Precio precio;
-	
+	private Boolean isPago;
+
 	public LineaVentaCuentaCorriente() {}
 	
 	public LineaVentaCuentaCorriente(Integer id, Integer cantidad, EstadoCuentaCorriente estadoCuentaCorriente, Venta venta, Precio precio) {
@@ -77,5 +82,12 @@ public class LineaVentaCuentaCorriente {
 	public void setPrecio(Precio precio) {
 		this.precio = precio;
 	}
-		
+
+	public Boolean getIsPago() {
+		return isPago;
+	}
+
+	public void setIsPago(Boolean pago) {
+		isPago = pago;
+	}
 }

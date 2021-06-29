@@ -12,7 +12,6 @@ public class LineaVenta {
     private Integer id;
 	
 	private Integer cantidad;
-	private boolean isPago;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "articuloId")
@@ -21,11 +20,7 @@ public class LineaVenta {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "precioId")
 	private Precio precio;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "comprobantePagoId")
-	private ComprobantePago comprobantePago;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ventaId")
 	@JsonIgnore
@@ -33,14 +28,12 @@ public class LineaVenta {
 	
 	public LineaVenta() {}
 	
-	public LineaVenta (Integer id, Integer cantidad, boolean isPago, Articulo articulo, Precio precio, ComprobantePago comprobantePago, Venta venta) {
+	public LineaVenta (Integer id, Integer cantidad, Articulo articulo, Precio precio, Venta venta) {
 		
 		this.id = id;
 		this.cantidad = cantidad;
-		this.isPago = isPago;
 		this.articulo = articulo;
 		this.precio = precio;
-		this.comprobantePago = comprobantePago;
 		this.venta = venta;
 	}
 
@@ -60,14 +53,6 @@ public class LineaVenta {
 		this.cantidad = cantidad;
 	}
 
-	public boolean getIsPago() {
-		return isPago;
-	}
-
-	public void setIsPago(boolean isPago) {
-		this.isPago = isPago;
-	}
-
 	public Articulo getArticulo() {
 		return articulo;
 	}
@@ -82,14 +67,6 @@ public class LineaVenta {
 
 	public void setPrecio(Precio precio) {
 		this.precio = precio;
-	}
-
-	public ComprobantePago getComprobantePago() {
-		return comprobantePago;
-	}
-
-	public void setComprobantePago(ComprobantePago comprobantePago) {
-		this.comprobantePago = comprobantePago;
 	}
 
 	public Venta getVenta() {
