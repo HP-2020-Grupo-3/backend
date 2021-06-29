@@ -16,6 +16,7 @@ public class VentaDto {
 	private TipoEntrega currentTipoEntrega;
 	private Descuento currentDescuento;
 	private MedioPago currentMedioPago;
+	private ComprobantePago comprobantePago;
 	private Integer usuarioId;
 	private List<LineaVentaDto> lineaVentaDtos;
 
@@ -36,6 +37,7 @@ public class VentaDto {
 		this.currentTipoEntrega = venta.getTipoEntrega();
 		this.currentDescuento = venta.getDescuento();
 		this.currentMedioPago = venta.getMedioPago();
+		this.comprobantePago = venta.getComprobantePago();
 		this.usuarioId = venta.getUsuario() != null ? venta.getUsuario().getId() : null;
 		this.availableTipoEntrega = availableTipoEntrega;
 		this.availableDescuento = availableDescuento;
@@ -112,6 +114,14 @@ public class VentaDto {
 
 	public void setCurrentMedioPago(MedioPago currentMedioPago) {
 		this.currentMedioPago = currentMedioPago;
+	}
+	
+	public ComprobantePago getComprobantePago() {
+		return comprobantePago;
+	}
+
+	public void setComprobantePago(ComprobantePago comprobantePago) {
+		this.comprobantePago = comprobantePago;
 	}
 
 	public Integer getUsuarioId() {

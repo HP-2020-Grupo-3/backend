@@ -5,6 +5,7 @@ import java.util.*;
 import com.hp2020g3.venidemary.dto.LineaVentaDto;
 import com.hp2020g3.venidemary.dto.VentaDto;
 import com.hp2020g3.venidemary.model.Articulo;
+import com.hp2020g3.venidemary.model.ComprobantePago;
 import com.hp2020g3.venidemary.model.LineaVenta;
 import com.hp2020g3.venidemary.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class VentaService {
     private UsuarioService usuarioService;
 	@Autowired
     private ContadorService contadorService;
+	
+	@Autowired
+    private ComprobantePagoService comprobantePagoService;
 
     public Iterable<Venta> findAll() {
         
@@ -44,7 +48,8 @@ public class VentaService {
 	
 	public VentaDto save(VentaDto ventaDto) {
         Venta venta = new Venta();
-
+        ComprobantePago comprobantePago = new ComprobantePago(new Date(), contadorService.getValor(Constants.CONTADOR_COMP_PAGO));
+        
         venta.setFecha(new Date());
         venta.setNumeroComprobante(contadorService.getValor(Constants.CONTADOR_COMP_VENTA));
         venta.setIsEntregada(ventaDto.isEntregada());
@@ -52,6 +57,7 @@ public class VentaService {
         venta.setTipoEntrega(ventaDto.getCurrentTipoEntrega());
         venta.setDescuento(ventaDto.getCurrentDescuento());
         venta.setMedioPago(ventaDto.getCurrentMedioPago());
+        venta.setComprobantePago(comprobantePagoService.save(comprobantePago));
         venta.setUsuario(usuarioService.findById(ventaDto.getUsuarioId()).get());
 
         List<LineaVenta> lineaVentas = new ArrayList<LineaVenta>();
@@ -60,7 +66,7 @@ public class VentaService {
             Articulo articulo = articuloService.findById(lineaVentaDto.getArticuloId()).get();
 
             lineaVenta.setCantidad(lineaVentaDto.getCantidad());
-            lineaVenta.setIsPago(true);
+
             lineaVenta.setArticulo(articulo);
             lineaVenta.setPrecio(articulo.getPrecio());
             lineaVenta.setVenta(venta);
@@ -72,7 +78,8 @@ public class VentaService {
 		ventaDto = new VentaDto(ventaRepository.save(venta), tipoEntregaService.findAll(), descuentoService.findAllByIsHabilitado(true),
                 medioPagoService.findAll(), articuloService.findAllByIsDeleted());
 		contadorService.increaseAndSave(Constants.CONTADOR_COMP_VENTA);
-
+		contadorService.increaseAndSave(Constants.CONTADOR_COMP_PAGO);
+		
 		return ventaDto;
 	}
 	

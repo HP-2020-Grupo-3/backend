@@ -17,7 +17,6 @@ public class LineaVentaDto {
     public LineaVentaDto(LineaVenta lineaVenta) {
         this.id = lineaVenta.getId();
         this.cantidad = lineaVenta.getCantidad();
-        this.isPago = lineaVenta.getIsPago();
         this.precio = lineaVenta.getPrecio().getValor();
         if (lineaVenta.getArticulo() != null) {
             this.articuloNombre = lineaVenta.getArticulo().getNombre();

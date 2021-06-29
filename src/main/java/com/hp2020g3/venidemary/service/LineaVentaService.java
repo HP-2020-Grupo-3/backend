@@ -40,7 +40,6 @@ public class LineaVentaService {
 
         if (lineaVenta.isPresent()) {
             lineaVenta.get().setCantidad(newLineaVenta.getCantidad());
-            lineaVenta.get().setIsPago(newLineaVenta.getIsPago());
             lineaVenta.get().setArticulo(newLineaVenta.getArticulo());
             lineaVenta.get().setPrecio(newLineaVenta.getPrecio());
             return this.save(lineaVenta.get());

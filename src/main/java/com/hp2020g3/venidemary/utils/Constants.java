@@ -20,5 +20,6 @@ public class Constants {
 
 	// Comprobantes
 	public static String CONTADOR_COMP_VENTA = "COMPROBANTE_VENTA";
-
+	public static String CONTADOR_COMP_PAGO = "COMPROBANTE_PAGO";
+	
 }

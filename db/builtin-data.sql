@@ -5,7 +5,9 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
-INSERT INTO `contador` VALUES (1,'COMPROBANTE_VENTA',0);
+INSERT INTO `contador` VALUES 
+	(1,'COMPROBANTE_VENTA',1),
+    (2,'COMPROBANTE_PAGO',1);
 
 INSERT INTO `descuento` VALUES (1,0.00,1);
 
@@ -42,9 +44,12 @@ INSERT INTO `role` VALUES
 INSERT INTO `tipoEntrega` VALUES
     (1,'Presencial');
 
+INSERT INTO `rubro` VALUES
+    (1,'Genérico');
+
 INSERT INTO `usuario` VALUES
     (1,'Admin','$2a$10$YNEtwYCuwJTvM.eahcbg0erBKMEkDITuHb5.JtWYYQHP6dxa.bVTK','some@mail.jp',1,'Admin',''),
-    (2,'empleado','$2y$10$JMk0pfWw.KS5Y6XfRom0HO1WK.hXPbeJyYM9WX7CmRYanRefVKbuC','empelado@mail.jp',2,'empleado',''),
+    (2,'empleado','$2y$10$JMk0pfWw.KS5Y6XfRom0HO1WK.hXPbeJyYM9WX7CmRYanRefVKbuC','empleado@mail.jp',2,'empleado',''),
     (3,'usuario','$2y$10$HrGxwEleiVpg/lu4yznZGeRIF7NkqLyKNndEsazll9bp8eAvAWfIG','usuario@mail.com',3,'usuario','');
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

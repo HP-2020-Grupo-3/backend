@@ -18,7 +18,7 @@ public class ComprobantePago {
 	private String numeroFactura;
 	private String nota;
 	
-public ComprobantePago() {}
+	public ComprobantePago() {}
 	
 	public ComprobantePago (Integer id, Date fecha, Integer numeroComprobante, String numeroFactura, String nota) {
 		this.id = id;
@@ -28,7 +28,12 @@ public ComprobantePago() {}
 		this.nota = nota;
 		
 	}
-
+	
+	public ComprobantePago (Date fecha, Integer numeroComprobante) {
+		this.fecha = fecha;
+		this.numeroComprobante = numeroComprobante;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

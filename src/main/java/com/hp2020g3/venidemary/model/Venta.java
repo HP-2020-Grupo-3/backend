@@ -36,6 +36,10 @@ public class Venta {
 	private MedioPago medioPago;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "comprobantePagoId")
+	private ComprobantePago comprobantePago;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuarioEntityId")
 	private Usuario usuario;
 
@@ -48,7 +52,7 @@ public class Venta {
 	
 	public Venta () {}
 	
-	public Venta (Integer id, Date fecha, Integer numeroComprobante, boolean isEntregada, String nota, TipoEntrega tipoEntrega, Descuento descuento, MedioPago medioPago, Usuario usuario) {
+	public Venta (Integer id, Date fecha, Integer numeroComprobante, boolean isEntregada, String nota, TipoEntrega tipoEntrega, Descuento descuento, MedioPago medioPago, ComprobantePago comprobantePago, Usuario usuario) {
 		this.id = id;
 		this.fecha = fecha;
 		this.numeroComprobante = numeroComprobante;
@@ -57,6 +61,7 @@ public class Venta {
 		this.tipoEntrega = tipoEntrega;
 		this.descuento = descuento;
 		this.medioPago = medioPago;
+		this.comprobantePago = comprobantePago;
 		this.usuario = usuario;
 	}
 
@@ -123,6 +128,14 @@ public class Venta {
 	public void setMedioPago(MedioPago medioPago) {
 		this.medioPago = medioPago;
 	}
+	
+	public ComprobantePago getComprobantePago() {
+		return comprobantePago;
+	}
+
+	public void setComprobantePago(ComprobantePago comprobantePago) {
+		this.comprobantePago = comprobantePago;
+	}
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -163,6 +176,5 @@ public class Venta {
 	public void setLineasVentaCuentaCorriente(List<LineaVentaCuentaCorriente> lineasVentaCuentaCorriente) {
 		this.lineasVentaCuentaCorriente = lineasVentaCuentaCorriente;
 	}
-	
-	
+		
 }
