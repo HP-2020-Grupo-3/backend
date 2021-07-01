@@ -25,6 +25,10 @@ public class VentaDto {
 	private Iterable<MedioPago> availableMedioPago;
 	private Iterable<ArticuloDto> availableArticuloDto;
 
+	private CuentaCorrienteClienteVentaDto selectedCuentaCorrienteClienteVentaDto;
+	private Iterable<CuentaCorrienteClienteVentaDto> cuentaCorrienteClienteVentaDtos;
+	private Boolean isPrecioCongelado;
+
 	public VentaDto(){};
 
 	public VentaDto(Venta venta, Iterable<TipoEntrega> availableTipoEntrega, Iterable<Descuento> availableDescuento,
@@ -43,11 +47,26 @@ public class VentaDto {
 		this.availableDescuento = availableDescuento;
 		this.availableMedioPago = availableMedioPago;
 		this.availableArticuloDto = availableArticuloDto;
+		this.isPrecioCongelado = false;
 
 		this.lineaVentaDtos = new ArrayList<LineaVentaDto>();
-		if (venta.getLineasVenta() != null) {
+		if (venta.getLineasVenta() != null && !venta.getLineasVenta().isEmpty()) {
 			for (LineaVenta lineaVenta: venta.getLineasVenta()) {
 				this.lineaVentaDtos.add(new LineaVentaDto(lineaVenta));
+			}
+		} else if (venta.getLineasVentaCuentaCorriente() != null && !venta.getLineasVentaCuentaCorriente().isEmpty()) {
+			// Cuenta Corriente
+			for (LineaVentaCuentaCorriente lineaVenta: venta.getLineasVentaCuentaCorriente()) {
+				this.lineaVentaDtos.add(new LineaVentaDto(lineaVenta));
+
+				if (this.selectedCuentaCorrienteClienteVentaDto == null) {
+					this.selectedCuentaCorrienteClienteVentaDto = new CuentaCorrienteClienteVentaDto(
+							lineaVenta.getEstadoCuentaCorriente().getCuentaCorrienteCliente());
+				}
+
+				if (!this.isPrecioCongelado && lineaVenta.getPrecio() != null) {
+					this.isPrecioCongelado = true;
+				}
 			}
 		}
 	}
@@ -170,5 +189,29 @@ public class VentaDto {
 
 	public void setAvailableArticuloDto(Iterable<ArticuloDto> availableArticuloDto) {
 		this.availableArticuloDto = availableArticuloDto;
+	}
+
+	public Iterable<CuentaCorrienteClienteVentaDto> getCuentaCorrienteClienteVentaDtos() {
+		return cuentaCorrienteClienteVentaDtos;
+	}
+
+	public void setCuentaCorrienteClienteVentaDtos(Iterable<CuentaCorrienteClienteVentaDto> cuentaCorrienteClienteVentaDtos) {
+		this.cuentaCorrienteClienteVentaDtos = cuentaCorrienteClienteVentaDtos;
+	}
+
+	public CuentaCorrienteClienteVentaDto getSelectedCuentaCorrienteClienteVentaDto() {
+		return selectedCuentaCorrienteClienteVentaDto;
+	}
+
+	public void setSelectedCuentaCorrienteClienteVentaDto(CuentaCorrienteClienteVentaDto selectedCuentaCorrienteClienteVentaDto) {
+		this.selectedCuentaCorrienteClienteVentaDto = selectedCuentaCorrienteClienteVentaDto;
+	}
+
+	public Boolean isPrecioCongelado() {
+		return isPrecioCongelado;
+	}
+
+	public void setPrecioCongelado(Boolean precioCongelado) {
+		isPrecioCongelado = precioCongelado;
 	}
 }

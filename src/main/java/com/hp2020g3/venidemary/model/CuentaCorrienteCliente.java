@@ -1,5 +1,7 @@
 package com.hp2020g3.venidemary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -98,5 +100,11 @@ public class CuentaCorrienteCliente {
 	public void setEstadosCuentaCorriente(List<EstadoCuentaCorriente> estadosCuentaCorriente) {
 		this.estadosCuentaCorriente = estadosCuentaCorriente;
 	}
-	
+
+	@JsonIgnore
+    public Double getTotal() {
+		return this.estadosCuentaCorriente.stream()
+			.mapToDouble(estadoCuentaCorriente -> (Double) estadoCuentaCorriente.getArticulo().getPrecio().getValor())
+			.sum();
+    }
 }

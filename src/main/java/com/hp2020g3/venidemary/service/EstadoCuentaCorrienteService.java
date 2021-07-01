@@ -61,4 +61,11 @@ public class EstadoCuentaCorrienteService {
 		return new EstadoCuentaCorriente();
 	}
 
+    public EstadoCuentaCorriente findByCuentaCorrienteClienteId(Integer cuentaConrrienteClienteId) {
+		return estadoCuentaCorrienteRepository.findByCuentaCorrienteClienteId(cuentaConrrienteClienteId);
+    }
+
+	public EstadoCuentaCorriente findByCuentaCorrienteClienteIdAndArticuloId(Integer cuentaConrrienteClienteId, Integer id) {
+		return estadoCuentaCorrienteRepository.findByCuentaCorrienteClienteIdAndArticuloId(cuentaConrrienteClienteId, id);
+	}
 }

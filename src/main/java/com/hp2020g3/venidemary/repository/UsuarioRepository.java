@@ -16,14 +16,14 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
 	
 	Iterable<Usuario> findByRoleId(Integer roleId);
 	
-	@Query (value= "SELECT * \r\n"
-			+ "FROM usuario u \r\n"
-			+ "INNER JOIN entity e \r\n"
-			+ "    ON u.entityId = e.id \r\n"
-			+ "INNER JOIN role r \r\n"
-			+ "    ON u.roleId = r.id \r\n"
-			+ "LEFT JOIN cuentaCorrienteCliente ccc\r\n"
-			+ "    ON u.entityId = ccc.usuarioEntityId \r\n"
+	@Query (value= "SELECT * "
+			+ "FROM usuario u "
+			+ "INNER JOIN entity e "
+			+ "    ON u.entityId = e.id "
+			+ "INNER JOIN role r "
+			+ "    ON u.roleId = r.id "
+			+ "LEFT JOIN cuentaCorrienteCliente ccc "
+			+ "    ON u.entityId = ccc.usuarioEntityId "
 			+ "WHERE r.id = 3 AND (ccc.usuarioEntityId IS NULL OR ccc.isDeleted = 1)", nativeQuery = true)
 	Iterable<Usuario> findValidUsersForCC();
 }

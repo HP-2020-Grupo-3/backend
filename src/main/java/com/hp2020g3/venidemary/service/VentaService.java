@@ -1,16 +1,16 @@
 package com.hp2020g3.venidemary.service;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import com.hp2020g3.venidemary.dto.CuentaCorrienteClienteVentaDto;
 import com.hp2020g3.venidemary.dto.LineaVentaDto;
 import com.hp2020g3.venidemary.dto.VentaDto;
-import com.hp2020g3.venidemary.model.Articulo;
-import com.hp2020g3.venidemary.model.ComprobantePago;
-import com.hp2020g3.venidemary.model.LineaVenta;
+import com.hp2020g3.venidemary.model.*;
 import com.hp2020g3.venidemary.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.hp2020g3.venidemary.model.Venta;
 import com.hp2020g3.venidemary.repository.VentaRepository;
 
 @Service
@@ -30,9 +30,12 @@ public class VentaService {
     private UsuarioService usuarioService;
 	@Autowired
     private ContadorService contadorService;
-	
 	@Autowired
     private ComprobantePagoService comprobantePagoService;
+	@Autowired
+    private CuentaCorrienteClienteService cuentaCorrienteClienteService;
+	@Autowired
+    private EstadoCuentaCorrienteService estadoCuentaCorrienteService;
 
     public Iterable<Venta> findAll() {
         
@@ -41,44 +44,103 @@ public class VentaService {
     }
 	
 	public VentaDto findById(Integer id) {
-        return new VentaDto(ventaRepository.save(ventaRepository.findById(id).get()), tipoEntregaService.findAll(), descuentoService.findAllByIsHabilitado(true),
+        VentaDto ventaDto = new VentaDto(ventaRepository.findById(id).get(), tipoEntregaService.findAll(), descuentoService.findAllByIsHabilitado(true),
             medioPagoService.findAll(), articuloService.findAllByIsDeleted());
-    	
+
+        Iterable<CuentaCorrienteCliente> cuentaCorrienteClientes =
+                cuentaCorrienteClienteService.findByIsAprobadaAndIsDeleted(true, false);
+
+		ventaDto.setCuentaCorrienteClienteVentaDtos(
+		        StreamSupport.stream(cuentaCorrienteClientes.spliterator(), false)
+                    .map(cuentaCorrienteCliente -> new CuentaCorrienteClienteVentaDto((CuentaCorrienteCliente) cuentaCorrienteCliente))
+                    .collect(Collectors.toList()));
+
+		return ventaDto;
     }
 	
-	public VentaDto save(VentaDto ventaDto) {
-        Venta venta = new Venta();
-        ComprobantePago comprobantePago = new ComprobantePago(new Date(), contadorService.getValor(Constants.CONTADOR_COMP_PAGO));
-        
-        venta.setFecha(new Date());
-        venta.setNumeroComprobante(contadorService.getValor(Constants.CONTADOR_COMP_VENTA));
-        venta.setIsEntregada(ventaDto.isEntregada());
-        venta.setNota(ventaDto.getNota());
-        venta.setTipoEntrega(ventaDto.getCurrentTipoEntrega());
-        venta.setDescuento(ventaDto.getCurrentDescuento());
-        venta.setMedioPago(ventaDto.getCurrentMedioPago());
-        venta.setComprobantePago(comprobantePagoService.save(comprobantePago));
-        venta.setUsuario(usuarioService.findById(ventaDto.getUsuarioId()).get());
-
+    private List<LineaVenta> lineaDeVentaDtosToLineaVentas(List<LineaVentaDto> lineaVentaDtos, Venta venta) {
         List<LineaVenta> lineaVentas = new ArrayList<LineaVenta>();
-        for (LineaVentaDto lineaVentaDto : ventaDto.getLineaVentaDtos()) {
+        for (LineaVentaDto lineaVentaDto : lineaVentaDtos) {
             LineaVenta lineaVenta = new LineaVenta();
             Articulo articulo = articuloService.findById(lineaVentaDto.getArticuloId()).get();
 
             lineaVenta.setCantidad(lineaVentaDto.getCantidad());
-
             lineaVenta.setArticulo(articulo);
             lineaVenta.setPrecio(articulo.getPrecio());
             lineaVenta.setVenta(venta);
 
             lineaVentas.add(lineaVenta);
         }
-        venta.setLineasVenta(lineaVentas);
+
+        return lineaVentas;
+    }
+
+    private List<LineaVentaCuentaCorriente> lineaDeVentaDtosToLineaVentasCuentaCorreinte(
+            List<LineaVentaDto> lineaVentaDtos, Venta venta, Integer cuentaConrrienteClienteId, Boolean precioCongelado) {
+        CuentaCorrienteCliente cuentaCorriente = cuentaCorrienteClienteService.findById(cuentaConrrienteClienteId);
+
+        List<LineaVentaCuentaCorriente> lineaVentas = new ArrayList<LineaVentaCuentaCorriente>();
+        for (LineaVentaDto lineaVentaDto : lineaVentaDtos) {
+            LineaVentaCuentaCorriente lineaVenta = new LineaVentaCuentaCorriente();
+            Articulo articulo = articuloService.findById(lineaVentaDto.getArticuloId()).get();
+            EstadoCuentaCorriente estadoCuentaCorriente = estadoCuentaCorrienteService
+                    .findByCuentaCorrienteClienteIdAndArticuloId(cuentaConrrienteClienteId, articulo.getId());
+
+            if (estadoCuentaCorriente == null) {
+                estadoCuentaCorriente = new EstadoCuentaCorriente();
+                estadoCuentaCorriente.setArticulo(articulo);
+                estadoCuentaCorriente.setCuentaCorrienteCliente(cuentaCorriente);
+                estadoCuentaCorriente.setCantidad(0);
+                estadoCuentaCorriente = estadoCuentaCorrienteService.save(estadoCuentaCorriente);
+            }
+
+            lineaVenta.setCantidad(lineaVentaDto.getCantidad());
+            lineaVenta.setVenta(venta);
+            if (precioCongelado == null || !precioCongelado) {
+                estadoCuentaCorriente.setCantidad(estadoCuentaCorriente.getCantidad() + lineaVentaDto.getCantidad());
+            } else {
+                lineaVenta.setPrecio(articulo.getPrecio());
+                lineaVenta.setIsPago(false);
+            }
+            lineaVenta.setEstadoCuentaCorriente(estadoCuentaCorriente);
+
+            lineaVentas.add(lineaVenta);
+        }
+
+        return lineaVentas;
+    }
+
+	public VentaDto save(VentaDto ventaDto) {
+
+        Venta venta = new Venta();
+
+        venta.setFecha(new Date());
+        venta.setNumeroComprobante(contadorService.getValor(Constants.CONTADOR_COMP_VENTA));
+        venta.setIsEntregada(ventaDto.isEntregada());
+        venta.setNota(ventaDto.getNota());
+        venta.setTipoEntrega(ventaDto.getCurrentTipoEntrega());
+        venta.setDescuento(ventaDto.getCurrentDescuento());
+        venta.setUsuario(usuarioService.findById(ventaDto.getUsuarioId()).get());
+        venta.setMedioPago(ventaDto.getCurrentMedioPago());
+
+        if (ventaDto.getSelectedCuentaCorrienteClienteVentaDto() != null) {
+            venta.setLineasVentaCuentaCorriente(this.lineaDeVentaDtosToLineaVentasCuentaCorreinte(
+                    ventaDto.getLineaVentaDtos(), venta, ventaDto.getSelectedCuentaCorrienteClienteVentaDto().getId(),
+                    ventaDto.isPrecioCongelado()));
+        } else {
+            ComprobantePago comprobantePago = new ComprobantePago(new Date(), contadorService.getValor(Constants.CONTADOR_COMP_PAGO));
+
+            venta.setComprobantePago(comprobantePagoService.save(comprobantePago));
+            venta.setLineasVenta(this.lineaDeVentaDtosToLineaVentas(ventaDto.getLineaVentaDtos(), venta));
+        }
 
 		ventaDto = new VentaDto(ventaRepository.save(venta), tipoEntregaService.findAll(), descuentoService.findAllByIsHabilitado(true),
                 medioPagoService.findAll(), articuloService.findAllByIsDeleted());
 		contadorService.increaseAndSave(Constants.CONTADOR_COMP_VENTA);
-		contadorService.increaseAndSave(Constants.CONTADOR_COMP_PAGO);
+
+		if (ventaDto.getSelectedCuentaCorrienteClienteVentaDto() == null) {
+            contadorService.increaseAndSave(Constants.CONTADOR_COMP_PAGO);
+        }
 		
 		return ventaDto;
 	}
@@ -102,6 +164,14 @@ public class VentaService {
 	    dto.setCurrentDescuento(descuentoService.getDefault());
 	    dto.setCurrentMedioPago(medioPagoService.getDefault());
 	    dto.setCurrentTipoEntrega(tipoEntregaService.getDefault());
+
+	    Iterable<CuentaCorrienteCliente> cuentaCorrienteClientes =
+                cuentaCorrienteClienteService.findByIsAprobadaAndIsDeleted(true, false);
+
+		dto.setCuentaCorrienteClienteVentaDtos(
+		        StreamSupport.stream(cuentaCorrienteClientes.spliterator(), false)
+                    .map(cuentaCorrienteCliente -> new CuentaCorrienteClienteVentaDto((CuentaCorrienteCliente) cuentaCorrienteCliente))
+                    .collect(Collectors.toList()));
 
         return dto;
     }

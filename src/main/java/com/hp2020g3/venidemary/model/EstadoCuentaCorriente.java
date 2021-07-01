@@ -1,5 +1,7 @@
 package com.hp2020g3.venidemary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -22,6 +24,7 @@ public class EstadoCuentaCorriente {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cuentaCorrienteClienteId")
+	@JsonIgnore
 	private CuentaCorrienteCliente cuentaCorrienteCliente;
 	
 	@ManyToOne(fetch = FetchType.EAGER)

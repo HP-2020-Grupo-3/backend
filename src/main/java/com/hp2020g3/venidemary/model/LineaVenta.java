@@ -12,7 +12,7 @@ public class LineaVenta {
     private Integer id;
 	
 	private Integer cantidad;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "articuloId")
 	private Articulo articulo;
@@ -20,7 +20,7 @@ public class LineaVenta {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "precioId")
 	private Precio precio;
-		
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ventaId")
 	@JsonIgnore
