@@ -19,7 +19,7 @@ CREATE TABLE `articulo` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `imagen` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `imagen` varchar(100) COLLATE utf8mb4_unicode_ci NULL,
   `stockActual` int unsigned NOT NULL,
   `stockDeseado` int unsigned NOT NULL,
   `deletionDate` datetime DEFAULT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE `articulo` (
   PRIMARY KEY (`id`),
   KEY `articulo_rubro_FK` (`rubroId`),
   CONSTRAINT `articulo_rubro_FK` FOREIGN KEY (`rubroId`) REFERENCES `rubro` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `ciudad`
@@ -70,8 +70,8 @@ CREATE TABLE `comprobantePago` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `numeroComprobante` int unsigned NOT NULL,
-  `numeroFactura` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nota` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `numeroFactura` varchar(100) NULL,
+  `nota` varchar(400) NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `comprobantePago_numeroComprobante_UNIQUE` (`numeroComprobante`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -115,7 +115,7 @@ CREATE TABLE `descuento` (
   `valor` decimal(3,2) NOT NULL,
   `isHabilitado` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `direccion`
@@ -150,7 +150,7 @@ CREATE TABLE `entity` (
   PRIMARY KEY (`id`),
   KEY `entity_entityType_FK` (`entityTypeId`),
   CONSTRAINT `entity_entityType_FK` FOREIGN KEY (`entityTypeId`) REFERENCES `entityType` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `entityType`
@@ -161,7 +161,7 @@ CREATE TABLE `entityType` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `estadoCuentaCorriente`
@@ -236,7 +236,7 @@ CREATE TABLE `lineaVenta` (
   CONSTRAINT `lineaVenta_articulo_FK` FOREIGN KEY (`articuloId`) REFERENCES `articulo` (`id`),
   CONSTRAINT `lineaVenta_precio_FK` FOREIGN KEY (`precioId`) REFERENCES `precio` (`id`),
   CONSTRAINT `lineaVenta_venta_FK` FOREIGN KEY (`ventaId`) REFERENCES `venta` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `lineaVentaCuentaCorriente`
@@ -268,7 +268,7 @@ CREATE TABLE `medioPago` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `notaCredito`
@@ -355,7 +355,7 @@ CREATE TABLE `permission` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `precio`
@@ -370,7 +370,7 @@ CREATE TABLE `precio` (
   PRIMARY KEY (`id`),
   KEY `precio_articulo_FK` (`articuloId`),
   CONSTRAINT `precio_articulo_FK` FOREIGN KEY (`articuloId`) REFERENCES `articulo` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `proveedor`
@@ -396,7 +396,7 @@ CREATE TABLE `provincia` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `rLineaVentaNotaCredito`
@@ -458,7 +458,7 @@ CREATE TABLE `role` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `rubro`
@@ -469,7 +469,7 @@ CREATE TABLE `rubro` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `telefono`
@@ -508,7 +508,7 @@ CREATE TABLE `tipoEntrega` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `usuario`
@@ -556,7 +556,7 @@ CREATE TABLE `venta` (
   CONSTRAINT `venta_tipoEntrega_FK` FOREIGN KEY (`tipoEntregaId`) REFERENCES `tipoEntrega` (`id`),
   CONSTRAINT `lineaVenta_comprobantePago_FK` FOREIGN KEY (`comprobantePagoId`) REFERENCES `comprobantePago` (`id`),
   CONSTRAINT `venta_usuario_FK` FOREIGN KEY (`usuarioEntityId`) REFERENCES `usuario` (`entityId`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

@@ -24,6 +24,8 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
 			+ "    ON u.roleId = r.id "
 			+ "LEFT JOIN cuentaCorrienteCliente ccc "
 			+ "    ON u.entityId = ccc.usuarioEntityId "
-			+ "WHERE r.id = 3 AND (ccc.usuarioEntityId IS NULL OR ccc.isDeleted = 1)", nativeQuery = true)
+			+ "WHERE r.id = 3 "
+			+ "AND (ccc.usuarioEntityId IS NULL OR ccc.isDeleted = 1)"
+			+ "AND e.isDeleted = 0", nativeQuery = true)
 	Iterable<Usuario> findValidUsersForCC();
 }
