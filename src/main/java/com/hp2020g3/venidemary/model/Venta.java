@@ -46,7 +46,7 @@ public class Venta {
 	@Formula("(IFNULL( " +
 			"(SELECT SUM(lineaVenta.cantidad * precio.valor) - SUM(lineaVenta.cantidad * precio.valor) * descuento.valor " +
 			"FROM lineaVenta INNER JOIN precio ON (lineaVenta.precioId = precio.id) " +
-			"INNER JOIN descuento ON (1 = descuento.id) " +
+			"INNER JOIN descuento ON (descuentoId = descuento.id) " +
 			"WHERE lineaVenta.ventaId = id), " +
 			"" +
 			"(SELECT SUM(lineaVentaCuentaCorriente.cantidad * precio.valor) - SUM(lineaVentaCuentaCorriente.cantidad * precio.valor) * descuento.valor " +

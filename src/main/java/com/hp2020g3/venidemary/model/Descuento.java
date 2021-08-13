@@ -46,14 +46,6 @@ public class Descuento {
 		this.isHabilitado = isHabilitado;
 	}
 
-	public boolean isHabilitado() {
-		return isHabilitado;
-	}
-
-	public void setHabilitado(boolean habilitado) {
-		isHabilitado = habilitado;
-	}
-
 	public String getDisplayText() {
 		return displayText;
 	}

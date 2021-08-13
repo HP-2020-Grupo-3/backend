@@ -28,7 +28,7 @@ public class VentaDto {
 	private CuentaCorrienteClienteVentaDto selectedCuentaCorrienteClienteVentaDto;
 	private Iterable<CuentaCorrienteClienteVentaDto> cuentaCorrienteClienteVentaDtos;
 	private Boolean isPrecioCongelado;
-
+	
 	public VentaDto(){};
 
 	public VentaDto(Venta venta, Iterable<TipoEntrega> availableTipoEntrega, Iterable<Descuento> availableDescuento,
@@ -214,4 +214,5 @@ public class VentaDto {
 	public void setPrecioCongelado(Boolean precioCongelado) {
 		isPrecioCongelado = precioCongelado;
 	}
+
 }
