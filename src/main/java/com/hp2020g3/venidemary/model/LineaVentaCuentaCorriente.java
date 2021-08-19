@@ -31,6 +31,11 @@ public class LineaVentaCuentaCorriente {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "precioId")
 	private Precio precio;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "comprobantePagoId")
+	private ComprobantePago comprobantePago;
+
 	private Boolean isPago;
 
 	public LineaVentaCuentaCorriente() {}
@@ -89,5 +94,13 @@ public class LineaVentaCuentaCorriente {
 
 	public void setIsPago(Boolean pago) {
 		isPago = pago;
+	}
+
+	public ComprobantePago getComprobantePago() {
+		return comprobantePago;
+	}
+
+	public void setComprobantePago(ComprobantePago comprobantePago) {
+		this.comprobantePago = comprobantePago;
 	}
 }

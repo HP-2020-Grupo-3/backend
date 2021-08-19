@@ -11,6 +11,9 @@ public class LineaVentaDto {
     private Double precio;
     private String articuloNombre;
     private Integer articuloId;
+    private Boolean isPago;
+
+    private Boolean aSerPagado;
 
     public LineaVentaDto() {}
 
@@ -30,6 +33,7 @@ public class LineaVentaDto {
     public LineaVentaDto(LineaVentaCuentaCorriente lineaVenta) {
         this.id = lineaVenta.getId();
         this.cantidad = lineaVenta.getCantidad();
+        this.aSerPagado = false;
 
         if (lineaVenta.getPrecio() != null) {
             this.precio = lineaVenta.getPrecio().getValor();
@@ -85,4 +89,21 @@ public class LineaVentaDto {
     public void setArticuloId(Integer articuloId) {
         this.articuloId = articuloId;
     }
+
+    public Boolean getIsPago() {
+        return isPago;
+    }
+
+    public void setIsPago(Boolean pago) {
+        isPago = pago;
+    }
+
+    public Boolean getaSerPagado() {
+        return aSerPagado;
+    }
+
+    public void setaSerPagado(Boolean aSerPagado) {
+        this.aSerPagado = aSerPagado;
+    }
+
 }

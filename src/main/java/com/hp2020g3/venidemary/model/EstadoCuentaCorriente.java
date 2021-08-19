@@ -3,6 +3,7 @@ package com.hp2020g3.venidemary.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -95,5 +96,12 @@ public class EstadoCuentaCorriente {
 	public void setLineasVentaCuentaCorriente(List<LineaVentaCuentaCorriente> lineasVentaCuentaCorriente) {
 		this.lineasVentaCuentaCorriente = lineasVentaCuentaCorriente;
 	}
-	
+
+	public List<LineaVentaCuentaCorriente> getLineasVentaCuentaCorrientePendienteDePago() {
+		return this.getLineasVentaCuentaCorriente()
+				.stream()
+				.filter(lineaVentaCuentaCorriente ->
+						(lineaVentaCuentaCorriente.getPrecio() != null && !lineaVentaCuentaCorriente.getIsPago()))
+				.collect(Collectors.toList());
+	}
 }

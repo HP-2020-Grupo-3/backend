@@ -1,18 +1,16 @@
 package com.hp2020g3.venidemary.service;
 
-import java.util.Iterator;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import com.hp2020g3.venidemary.dto.CuentaCorrienteClientesDto;
 import com.hp2020g3.venidemary.exception.EntityNotFoundException;
+import com.hp2020g3.venidemary.model.*;
+import com.hp2020g3.venidemary.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hp2020g3.venidemary.dto.CuentaCorrienteClienteDto;
-import com.hp2020g3.venidemary.model.CuentaCorrienteCliente;
-import com.hp2020g3.venidemary.model.Usuario;
 import com.hp2020g3.venidemary.repository.CuentaCorrienteClienteRepository;
-import com.hp2020g3.venidemary.repository.UsuarioRepository;
 
 
 @Service
@@ -23,7 +21,22 @@ public class CuentaCorrienteClienteService {
 	
 	@Autowired
 	private UsuarioService usuarioService;
-		
+
+	@Autowired
+	private EstadoCuentaCorrienteService estadoCuentaCorrienteService;
+
+	@Autowired
+	private LineaVentaCuentaCorrienteService lineaVentaCuentaCorrienteService;
+
+	@Autowired
+	private PagoCuentaCorrienteService pagoCuentaCorrienteService;
+
+	@Autowired
+	private ComprobantePagoService comprobantePagoService;
+
+	@Autowired
+    private ContadorService contadorService;
+
 	Integer cantidadAprobacion = 0;
 	
 	public CuentaCorrienteClientesDto findAll() {
@@ -135,5 +148,55 @@ public class CuentaCorrienteClienteService {
 		
 		return new CuentaCorrienteClienteDto(usuarios);
 	
+	}
+
+	public CuentaCorrienteClienteDto registerPago(CuentaCorrienteClienteDto cuentaCorrienteClienteDto) {
+		Optional<CuentaCorrienteCliente> cuentaCorrienteCliente = cuentaCorrienteClienteRepository.findById(cuentaCorrienteClienteDto.getId());
+		List<PagoCuentaCorriente> pagosCuentaCorriente = new ArrayList<PagoCuentaCorriente>();
+		CuentaCorrienteCliente cc;
+
+		if (cuentaCorrienteCliente.isPresent()) {
+			cc = cuentaCorrienteCliente.get();
+		} else {
+			throw new EntityNotFoundException(String.format("La cuenta corriente %d no existe.", cuentaCorrienteClienteDto.getId()));
+		}
+
+		ComprobantePago comprobantePago = comprobantePagoService.save(
+						new ComprobantePago(new Date(), contadorService.getValor(Constants.CONTADOR_COMP_PAGO)));
+		contadorService.increaseAndSave(Constants.CONTADOR_COMP_PAGO);
+
+		// Articulos con precio movil.
+		cuentaCorrienteClienteDto.getEstadoCuentaCorrienteDtos().stream()
+				.filter(estadoDto -> estadoDto.getCantidadAPagar() > 0)
+				.forEach(estadoDto -> {
+					PagoCuentaCorriente pagoCuentaCorriente = new PagoCuentaCorriente();
+					EstadoCuentaCorriente estado = estadoCuentaCorrienteService.findById(estadoDto.getId()).get();
+
+					estado.setCantidad(estado.getCantidad() - estadoDto.getCantidadAPagar());
+
+					pagoCuentaCorriente.setCantidad(estadoDto.getCantidadAPagar());
+					pagoCuentaCorriente.setEstadoCuentaCorriente(estado);
+					pagoCuentaCorriente.setComprobantePago(comprobantePago);
+					pagoCuentaCorriente.setPrecio(estado.getArticulo().getPrecio());
+
+					pagosCuentaCorriente.add(pagoCuentaCorriente);
+
+					pagoCuentaCorrienteService.save(pagoCuentaCorriente);
+					estadoCuentaCorrienteService.update(estado);
+				});
+
+		// Articulos con precio congelado.
+		cuentaCorrienteClienteDto.getLineasVentaPendienteDePago().stream()
+				.filter(lineaVentaDto -> lineaVentaDto.getaSerPagado())
+				.forEach(lineaVentaDto -> {
+					LineaVentaCuentaCorriente lineaVenta = lineaVentaCuentaCorrienteService.findById(lineaVentaDto.getId()).get();
+
+					lineaVenta.setIsPago(true);
+					lineaVenta.setComprobantePago(comprobantePago);
+
+					lineaVentaCuentaCorrienteService.update(lineaVenta);
+				});
+
+		return this.findDtoById(cuentaCorrienteClienteDto.getId());
 	}
 }

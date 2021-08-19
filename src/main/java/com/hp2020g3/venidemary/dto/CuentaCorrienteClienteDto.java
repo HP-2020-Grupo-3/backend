@@ -2,14 +2,11 @@ package com.hp2020g3.venidemary.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.hp2020g3.venidemary.model.CuentaCorrienteCliente;
-import com.hp2020g3.venidemary.model.LineaVenta;
 import com.hp2020g3.venidemary.model.Usuario;
 
 
@@ -24,6 +21,9 @@ public class CuentaCorrienteClienteDto {
 	private boolean isDeleted;
 	private Integer usuarioId;
 	private List<UsuarioCCDto> usuarioCCDtos;
+	private List<EstadoCuentaCorrienteDto> estadoCuentaCorrienteDtos;
+	private List<LineaVentaDto> lineasVentaPendienteDePago;
+
 
 	public CuentaCorrienteClienteDto() {}
 	
@@ -35,6 +35,15 @@ public class CuentaCorrienteClienteDto {
 		this.fechaCreacion = cuentaCorrienteCliente.getFechaCreacion();
 		this.isAprobada = cuentaCorrienteCliente.getIsAprobada();
 		this.isDeleted = cuentaCorrienteCliente.getIsDeleted();
+
+		this.estadoCuentaCorrienteDtos = cuentaCorrienteCliente
+				.getEstadosCuentaCorriente()
+				.stream().map(estadoCuentaCorriente -> new EstadoCuentaCorrienteDto(estadoCuentaCorriente))
+				.collect(Collectors.toList());
+
+		this.lineasVentaPendienteDePago = this.estadoCuentaCorrienteDtos.stream()
+				.flatMap(estadoCuentaCorrienteDto -> estadoCuentaCorrienteDto.getLineasVentaPendienteDePago().stream())
+				.collect(Collectors.toList());
 	}
 	
 	public CuentaCorrienteClienteDto (Iterable<Usuario> usuarios) {
@@ -121,5 +130,21 @@ public class CuentaCorrienteClienteDto {
 
 	public void setUsuarioCCDtos(ArrayList<UsuarioCCDto> usuarioCCDtos) {
 		this.usuarioCCDtos = usuarioCCDtos;
+	}
+
+	public List<EstadoCuentaCorrienteDto> getEstadoCuentaCorrienteDtos() {
+		return estadoCuentaCorrienteDtos;
+	}
+
+	public void setEstadoCuentaCorrienteDtos(List<EstadoCuentaCorrienteDto> estadoCuentaCorrienteDtos) {
+		this.estadoCuentaCorrienteDtos = estadoCuentaCorrienteDtos;
+	}
+
+	public List<LineaVentaDto> getLineasVentaPendienteDePago() {
+		return lineasVentaPendienteDePago;
+	}
+
+	public void setLineasVentaPendienteDePago(List<LineaVentaDto> lineasVentaPendienteDePago) {
+		this.lineasVentaPendienteDePago = lineasVentaPendienteDePago;
 	}
 }

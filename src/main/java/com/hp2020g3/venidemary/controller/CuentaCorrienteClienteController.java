@@ -45,6 +45,11 @@ public class CuentaCorrienteClienteController {
         return ResponseEntity.ok(cuentaCorrienteClienteService.save(cuentaCorrienteCliente));
     }
 
+    @PutMapping("/cuentaCorrienteCliente/pago")
+    public ResponseEntity registerPago(@RequestBody CuentaCorrienteClienteDto cuentaCorrienteCliente) {
+        return ResponseEntity.ok(cuentaCorrienteClienteService.registerPago(cuentaCorrienteCliente));
+    }
+
     @PutMapping("/cuentaCorrienteCliente")
     ResponseEntity update(@RequestBody CuentaCorrienteClienteDto newCuentaCorrienteCliente) {
         return ResponseEntity.ok(cuentaCorrienteClienteService.update(newCuentaCorrienteCliente));

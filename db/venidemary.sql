@@ -250,13 +250,16 @@ CREATE TABLE `lineaVentaCuentaCorriente` (
   `ventaId` int unsigned NOT NULL,
   `precioId` int unsigned NULL,
   `isPago` tinyint(1) NULL,
+  `comprobantePagoId` int unsigned NULL,
   PRIMARY KEY (`id`),
   KEY `lineaVentaCuentaCorriente_estadoCuentaCorriente_FK` (`estadoCuentaCorrienteId`),
   KEY `lineaVentaCuentaCorriente_venta_FK` (`ventaId`),
   KEY `lineaVentaCuentaCorriente_precio_FK` (`precioId`),
+  KEY `lineaVentaCuentaCorriente_comprobantePago_FK` (`comprobantePagoId`),
   CONSTRAINT `lineaVentaCuentaCorriente_estadoCuentaCorriente_FK` FOREIGN KEY (`estadoCuentaCorrienteId`) REFERENCES `estadoCuentaCorriente` (`id`),
   CONSTRAINT `lineaVentaCuentaCorriente_precio_FK` FOREIGN KEY (`precioId`) REFERENCES `precio` (`id`),
-  CONSTRAINT `lineaVentaCuentaCorriente_venta_FK` FOREIGN KEY (`ventaId`) REFERENCES `venta` (`id`)
+  CONSTRAINT `lineaVentaCuentaCorriente_venta_FK` FOREIGN KEY (`ventaId`) REFERENCES `venta` (`id`),
+  CONSTRAINT `lineaVentaCuentaCorriente_comprobantePago_FK` FOREIGN KEY (`comprobantePagoId`) REFERENCES `comprobantePago` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
