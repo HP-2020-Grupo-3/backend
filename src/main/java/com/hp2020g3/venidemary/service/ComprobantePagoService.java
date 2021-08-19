@@ -1,10 +1,17 @@
 package com.hp2020g3.venidemary.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.hp2020g3.venidemary.dto.ComprobantePagoDto;
 import com.hp2020g3.venidemary.model.ComprobantePago;
+import com.hp2020g3.venidemary.model.Venta;
 import com.hp2020g3.venidemary.repository.ComprobantePagoRepository;
+import com.hp2020g3.venidemary.repository.VentaRepository;
 
 @Service
 public class ComprobantePagoService {
@@ -12,15 +19,45 @@ public class ComprobantePagoService {
 	@Autowired
 	ComprobantePagoRepository comprobantePagoRepository;
 	
-	public Iterable<ComprobantePago> findAll() {
+	@Autowired
+	VentaRepository ventaRepository;
+	
+	public List<ComprobantePagoDto> findAll() {
         
-        return comprobantePagoRepository.findAll();
-	                        
+		Iterable<ComprobantePago> comprobantePagos = comprobantePagoRepository.findAll();
+		Iterator<ComprobantePago> it = comprobantePagos.iterator();
+		List<ComprobantePagoDto> comprobantePagosDtos = new ArrayList<ComprobantePagoDto>();
+		
+		while (it.hasNext()) {
+			ComprobantePago cp = it.next();
+			Optional<Venta> venta = ventaRepository.findByComprobantePagoId(cp.getId());
+			
+			if (venta.isPresent()) {
+				ComprobantePagoDto comprobantePagoDto = new ComprobantePagoDto(cp, venta.get());
+				comprobantePagosDtos.add(comprobantePagoDto);
+			}
+		}
+        return comprobantePagosDtos;	                        
     }
 	
-	public Optional<ComprobantePago> findById(Integer id) {
-        return comprobantePagoRepository.findById(id);
-    	
+	public ComprobantePagoDto findById(Integer id) {
+        
+		ComprobantePagoDto cpDto = new ComprobantePagoDto();
+		Optional<ComprobantePago> cp = comprobantePagoRepository.findById(id);
+		Optional<Venta> venta = ventaRepository.findByComprobantePagoId(id);
+		
+		if (cp.isPresent()) {
+			cpDto.setId(cp.get().getId());
+			cpDto.setFecha(cp.get().getFecha());
+			cpDto.setNumeroComprobante(cp.get().getNumeroComprobante());
+			cpDto.setNumeroFactura(cp.get().getNumeroFactura());
+			cpDto.setNota(cp.get().getNota());
+			if (venta.isPresent()) {
+				cpDto.setIdVenta(venta.get().getId());
+				cpDto.setTotalVenta(venta.get().getTotal());
+			}
+		}
+    	return cpDto;
     }
 	
 	public ComprobantePago save(ComprobantePago comprobantePago) {
@@ -28,7 +65,7 @@ public class ComprobantePagoService {
 	}
 	
 	public ComprobantePago update(ComprobantePago newComprobantePago) {
-        Optional<ComprobantePago> comprobantePago =  this.findById(newComprobantePago.getId());
+        Optional<ComprobantePago> comprobantePago = comprobantePagoRepository.findById(newComprobantePago.getId());
 
         if (comprobantePago.isPresent()) {
             comprobantePago.get().setFecha(newComprobantePago.getFecha());
