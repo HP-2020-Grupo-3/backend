@@ -1,5 +1,7 @@
 package com.hp2020g3.venidemary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,7 +17,8 @@ public class PagoCuentaCorriente implements LineaComprobantePagoInterface {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 	private Integer cantidad;
-	
+
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "estadoCuentaCorrienteId")
 	private EstadoCuentaCorriente estadoCuentaCorriente;

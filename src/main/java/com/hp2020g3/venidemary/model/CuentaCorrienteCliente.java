@@ -104,7 +104,8 @@ public class CuentaCorrienteCliente {
 	@JsonIgnore
     public Double getTotal() {
 		return this.estadosCuentaCorriente.stream()
-			.mapToDouble(estadoCuentaCorriente -> (Double) estadoCuentaCorriente.getArticulo().getPrecio().getValor())
+			.mapToDouble(estadoCuentaCorriente ->
+					(Double) estadoCuentaCorriente.getArticulo().getPrecio().getValor() * estadoCuentaCorriente.getCantidad())
 			.sum();
     }
 }

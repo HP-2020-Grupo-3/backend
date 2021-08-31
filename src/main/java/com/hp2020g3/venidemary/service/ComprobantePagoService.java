@@ -78,7 +78,7 @@ public class ComprobantePagoService {
 		return comprobantePagoRepository.save(comprobantePago);
 	}
 	
-	public ComprobantePago update(ComprobantePago newComprobantePago) {
+	public ComprobantePagoDto update(ComprobantePago newComprobantePago) {
         Optional<ComprobantePago> comprobantePago = comprobantePagoRepository.findById(newComprobantePago.getId());
 
         if (comprobantePago.isPresent()) {
@@ -86,11 +86,11 @@ public class ComprobantePagoService {
             comprobantePago.get().setNumeroComprobante(newComprobantePago.getNumeroComprobante());
             comprobantePago.get().setNumeroFactura(newComprobantePago.getNumeroFactura());
             comprobantePago.get().setNota(newComprobantePago.getNota());
-            return this.save(comprobantePago.get());
+            return comprobantePagoToDto(this.save(comprobantePago.get()));
         } else {
             // TODO: Esto deberia tirar un error de que el comprobantePago que intentas actualizar no existe.
             newComprobantePago.setId(null);
-            return this.save(newComprobantePago);
+            return comprobantePagoToDto(this.save(newComprobantePago));
         }
     }
 

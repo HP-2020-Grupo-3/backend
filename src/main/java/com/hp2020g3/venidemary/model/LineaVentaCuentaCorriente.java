@@ -106,7 +106,7 @@ public class LineaVentaCuentaCorriente implements LineaComprobantePagoInterface 
 
 	@Override
 	public Double getPrecioValor() {
-		return this.getPrecio().getValor();
+		return this.getPrecio() != null ? this.getPrecio().getValor() : 0d;
 	}
 
 	@Override

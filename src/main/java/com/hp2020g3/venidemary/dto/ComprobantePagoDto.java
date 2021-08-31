@@ -15,6 +15,7 @@ public class ComprobantePagoDto {
 	String numeroFactura;
 	String nota;
 	Integer idVenta;
+	Integer idCuentaCorriente;
 	Double totalVenta;
 	List<LineaVentaDto> lineaVentaDtos;
 	Descuento descuento;

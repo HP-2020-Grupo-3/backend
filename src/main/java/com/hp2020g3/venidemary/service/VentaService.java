@@ -7,6 +7,7 @@ import java.util.stream.StreamSupport;
 import com.hp2020g3.venidemary.dto.CuentaCorrienteClienteVentaDto;
 import com.hp2020g3.venidemary.dto.LineaVentaDto;
 import com.hp2020g3.venidemary.dto.VentaDto;
+import com.hp2020g3.venidemary.dto.VentaListItemDto;
 import com.hp2020g3.venidemary.model.*;
 import com.hp2020g3.venidemary.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,14 @@ public class VentaService {
 	@Autowired
     private EstadoCuentaCorrienteService estadoCuentaCorrienteService;
 
-    public Iterable<Venta> findAll() {
-        
-        return ventaRepository.findAll();
+    public Iterable<VentaListItemDto> findAll() {
+
+        return StreamSupport.stream(ventaRepository.findAll().spliterator(), false)
+                .map(venta -> venta.getComprobantePago() != null ?
+                        new VentaListItemDto(venta, comprobantePagoService.findById(venta.getComprobantePago().getId()))
+                        : new VentaListItemDto(venta)
+                )
+                .collect(Collectors.toList());
 	                        
     }
 	

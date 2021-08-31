@@ -1,5 +1,6 @@
 package com.hp2020g3.venidemary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.userdetails.User;
 
 import com.hp2020g3.venidemary.dto.UsuarioDto;
@@ -31,7 +32,8 @@ public class Usuario extends BaseEntity {
     
     @OneToMany(mappedBy ="usuario", fetch = FetchType.LAZY)
     private List<Direccion> direcciones;
-    
+
+    @JsonIgnore
     @OneToOne(mappedBy ="usuario", fetch = FetchType.LAZY)
     private CuentaCorrienteCliente cuentaCorrienteCliente;
 
