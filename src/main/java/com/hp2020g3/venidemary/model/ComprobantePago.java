@@ -32,6 +32,8 @@ public class ComprobantePago {
 	public ComprobantePago (Date fecha, Integer numeroComprobante) {
 		this.fecha = fecha;
 		this.numeroComprobante = numeroComprobante;
+		this.numeroFactura = "";
+		this.nota = "";
 	}
 	
 	public Integer getId() {
