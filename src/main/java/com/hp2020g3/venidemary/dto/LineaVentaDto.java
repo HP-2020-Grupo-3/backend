@@ -1,8 +1,6 @@
 package com.hp2020g3.venidemary.dto;
 
-import com.hp2020g3.venidemary.model.LineaVenta;
-import com.hp2020g3.venidemary.model.LineaVentaCuentaCorriente;
-import com.hp2020g3.venidemary.model.Precio;
+import com.hp2020g3.venidemary.model.*;
 
 public class LineaVentaDto {
 
@@ -30,7 +28,7 @@ public class LineaVentaDto {
         }
     }
 
-    public LineaVentaDto(LineaVentaCuentaCorriente lineaVenta) {
+    public  LineaVentaDto(LineaVentaCuentaCorriente lineaVenta) {
         this.id = lineaVenta.getId();
         this.cantidad = lineaVenta.getCantidad();
         this.aSerPagado = false;
@@ -48,6 +46,15 @@ public class LineaVentaDto {
             this.articuloNombre = null;
             this.articuloId = null;
         }
+    }
+
+    public LineaVentaDto(LineaComprobantePagoInterface linea) {
+//        this.id = linea.getId();
+        this.cantidad = linea.getCantidad();
+        this.precio = linea.getPrecioValor();
+        this.articuloNombre = linea.getArticuloNombre();
+        this.articuloId = linea.getArticuloId();
+        this.isPago = true;
     }
 
     public Integer getId() {

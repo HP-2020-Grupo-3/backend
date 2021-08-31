@@ -1,6 +1,9 @@
 package com.hp2020g3.venidemary.service;
 
+import java.util.List;
 import java.util.Optional;
+
+import com.hp2020g3.venidemary.model.LineaComprobantePagoInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hp2020g3.venidemary.exception.EntityNotFoundException;
@@ -18,7 +21,13 @@ public class PagoCuentaCorrienteService {
         return pagoCuentaCorrienteRepository.findAll();
                         
     }
-	
+
+    public List<LineaComprobantePagoInterface> findAllByComprobantePagoId(Integer id) {
+
+        return pagoCuentaCorrienteRepository.findAllByComprobantePagoId(id);
+
+    }
+
 	public Optional<PagoCuentaCorriente> findById(Integer id) {
         
 		return pagoCuentaCorrienteRepository.findById(id);

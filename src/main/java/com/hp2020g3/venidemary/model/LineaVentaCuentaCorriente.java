@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity(name="lineaVentaCuentaCorriente")
-public class LineaVentaCuentaCorriente {
+public class LineaVentaCuentaCorriente implements LineaComprobantePagoInterface {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -103,4 +103,20 @@ public class LineaVentaCuentaCorriente {
 	public void setComprobantePago(ComprobantePago comprobantePago) {
 		this.comprobantePago = comprobantePago;
 	}
+
+	@Override
+	public Double getPrecioValor() {
+		return this.getPrecio().getValor();
+	}
+
+	@Override
+	public String getArticuloNombre() {
+		return this.getEstadoCuentaCorriente().getArticulo().getNombre();
+	}
+
+	@Override
+	public Integer getArticuloId() {
+		return this.getEstadoCuentaCorriente().getArticulo().getId();
+	}
+
 }

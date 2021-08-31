@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity(name="pagoCuentaCorriente")
-public class PagoCuentaCorriente {
+public class PagoCuentaCorriente implements LineaComprobantePagoInterface {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,4 +78,18 @@ public class PagoCuentaCorriente {
 		this.precio = precio;
 	}
 
+	@Override
+	public Double getPrecioValor() {
+		return this.getPrecio().getValor();
+	}
+
+	@Override
+	public String getArticuloNombre() {
+		return this.getEstadoCuentaCorriente().getArticulo().getNombre();
+	}
+
+	@Override
+	public Integer getArticuloId() {
+		return this.getEstadoCuentaCorriente().getArticulo().getId();
+	}
 }
