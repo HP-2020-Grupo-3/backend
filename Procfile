@@ -1,0 +1,1 @@
+web: java -jar target/venidemary-0.0.1-SNAPSHOT.jar
